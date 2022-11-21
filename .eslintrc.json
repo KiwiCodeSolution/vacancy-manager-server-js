@@ -11,6 +11,7 @@
     "ecmaVersion": "latest"
   },
   "rules": {
-    "prettier/prettier": "error"
+    "no-console": 0,
+    "endOfLine": 0
   }
 }
