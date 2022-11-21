@@ -1,6 +1,7 @@
 const express = require('express');
 
 const app = express();
+
 const { createUser, getUsers } = require('./controller/userController');
 
 app.use(express.json());
