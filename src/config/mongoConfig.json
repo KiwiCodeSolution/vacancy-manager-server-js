@@ -1,0 +1,12 @@
+{
+  "development": {
+    "database": "vacancy_manager_db",
+    "host": "localhost",
+    "port": 27017
+  },
+  "production": {
+    "database": "",
+    "host": "localhost",
+    "port": 27017
+  }
+}
