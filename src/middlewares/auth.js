@@ -1,6 +1,6 @@
 const { Unauthorized } = require("http-errors");
 const jwt = require("jsonwebtoken");
-const { UserModel } = require("../dbMongo/mongoShema/userShema");
+const { UserModel } = require("../dbMongo/models/userModel");
 require("dotenv").config();
 
 const { SECRET_KEY } = process.env;

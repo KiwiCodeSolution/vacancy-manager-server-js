@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const VacancySchema = new mongoose.Schema({
-  name: {type: String}
+  name: { type: String },
 });
 
-const VacancyModel = ('Vacancy', VacancySchema)
+const VacancyModel = ("Vacancy", VacancySchema);
 module.exports = VacancyModel;
