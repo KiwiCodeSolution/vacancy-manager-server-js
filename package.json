@@ -32,5 +32,12 @@
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && tsc -p tsconfig.json",
+      "pre-push": "npm run test && npm run build",
+      "post-merge": "git-branch-is master && npm version patch"
+    }
   }
 }
