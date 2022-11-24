@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const ctrlWrapper = require('../middlewares/ctrlWrapper');
+const { ctrlWrapper } = require('../middlewares/ctrlWrapper');
 const auth = require('../middlewares/auth');
-const {createUser, getUsers, login, logout, currentUser} = require('../controller/userController');
+const { createUser, login, logout, currentUser } = require('../controller/userController');
 
 // router.get('/', ctrlWrapper(getUsers));
 router.post('/register', ctrlWrapper(createUser));
