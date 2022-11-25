@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const config = require('../../config/mongoConfig.json');
+const config = require("../../config/mongoConfig.json");
 require("dotenv").config();
 // const { DB_HOST } = process.env;
 module.exports = mongoose

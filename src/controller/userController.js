@@ -1,48 +1,63 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const { validationResult } = require('express-validator')
-const { secret } = require('../config/config')
-const UserModel = require('../dbMongo/mongoShema/UserModel');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
+const { secret } = require("../config/config");
+const UserModel = require("../dbMongo/models/UserModel");
 
 const generateAccessToken = (id, username) => {
   const payload = {
     id,
     username
-  }
-  return jwt.sign(payload, secret, { expiresIn: "24h" })
-}
-
-module.exports.createUser = async (req, res) => {
-  console.log(req.body);
-  const { body } = req;
-  const user = await userModel.create(body);
-  res.status(201).send({ data: user });
+  };
+  return jwt.sign(payload, secret, { expiresIn: "24h" });
 };
 
-module.exports.getUsers = async (req, res) => {
-  const getUsers = await userModel.find();
-  res.status(200).send({ data: getUsers });
+module.exports.registration = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ message: "ошибка при валидации", errors });
+    };
+    const { username, password } = req.body;
+    const candidate = await UserModel.findOne({ username });
+    console.log(candidate);
+    if (candidate) {
+      return res.status(400).json({ message: "пользователь с таким именем уже существует" });
+    };
+    const hashPassword = bcrypt.hashSync(password, 7);
+
+    const user = new UserModel({ username, passsword: hashPassword });
+    await user.save();
+    return res.json({ message: "Пользователь успешно зарегестрирован" });
+
+  } catch (error) {
+    res.status(400).json({ message: "Registration erroe" });
+  };
 };
+
 
 module.exports.login = async (req, res) => {
   try {
-    const { username, password } = req.body
-    console.log(username)
-    const user = await UserModel.findOne({ username })
+    const { username, password } = req.body;
+    console.log(username);
+    const user = await UserModel.findOne({ username });
 
-  }
+    if (!user) {
+      return res.status(400).json({ message: `пользователь ${username} не найден ` });
+    }
+    const validPassword = bcrypt.compareSync(password, user.passsword);
+    if (!validPassword) {
 
-      return res.status(400).json({ message: "введен не верный пароль" })
+      return res.status(400).json({ message: "введен не верный пароль" });
 
-  res.json({ request: req.body });
-}; const token = generateAccessToken(user._id, username)
-return res.json({ token })
+    }
+    const token = generateAccessToken(user._id, username);
+    return res.json({ token });
 
   } catch (error) {
-  console.log(error)
-
-  res.status(400).json({ message: 'login erroe' });
-}
+    console.log(error);
+    res.status(400).json({ message: "login erroe" });
+  }
 };
 
 

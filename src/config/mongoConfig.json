@@ -1,6 +1,6 @@
 {
   "development": {
-    "database": "test_test",
+    "database": "'jwt_test",
     "host": "localhost",
     "port": 27017
   },
