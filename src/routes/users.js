@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {ctrlWrapper} = require("../middlewares/ctrlWrapper");
+const ctrlWrapper = require("../middlewares/ctrlWrapper");
 const auth = require("../middlewares/auth");
 const {
   createUser,
