@@ -1,22 +1,20 @@
-const jwt = require("jsonwebtoken");
-const { secret } = require("../config/config");
-
-module.exports = function (req, res, next) {
-    if (req.method === "OPTIONS") {
-        next();
-    }
-
+const { Unauthorized } = require("http-errors");
+const UserModel = require("../dbMongo/models/UserModel");
+module.exports = async function (req, res, next) {
     try {
-        const token = req.headers.authorization.split(" ")[1];
-        if (!token) {
-            console.log("tokena net");
-            return res.status(403).json({ message: "пользователь не авторизован " });
+        const [bearer, userToken] = req.headers.authorization.split(" ");
+        if (bearer !== "Bearer")
+            throw new Unauthorized("Not authorized not find bearer");
+        if (!userToken) throw new Unauthorized("Not authorized not find token");
+        const user = await UserModel.findOne({ userToken });
+        if (!user) {
+            throw new Unauthorized("user not authorized ");
         }
-        const decodedData = jwt.verify(token, secret);
-        req.user = decodedData;
         next();
     } catch (error) {
         console.log(error);
-        return res.status(403).json({ message: "пользователь не авторизован " });
+        res
+            .status(401)
+            .json({ message: " Вы не авторизованы, сходите авторизуйтесь" });
     }
 };
