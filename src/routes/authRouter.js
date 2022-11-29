@@ -11,7 +11,7 @@ router.post("/registration", [
 
 ], controller.registration);
 router.post("/login", controller.login);
-router.post("/logout", controller.logout);
+router.get("/logout", authMiddleweare, controller.logout);
 router.get("/users", authMiddleweare, controller.getUser);
 
 module.exports = router;
