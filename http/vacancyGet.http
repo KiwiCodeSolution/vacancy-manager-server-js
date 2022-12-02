@@ -1,0 +1,2 @@
+GET http://localhost:5000/vacancy HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzODNiYTRiNDM5OGYyYmNlM2M2NjM3ZCIsInVzZXJuYW1lIjoidXNlcjkiLCJpYXQiOjE2Njk1Nzk2MTIsImV4cCI6MTY2OTY2NjAxMn0.gPBSm8vxMSZgP3g-DW_k-niUoxeJbCNd_iTOcWBOxT4

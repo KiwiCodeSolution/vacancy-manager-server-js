@@ -1,6 +1,6 @@
 {
   "development": {
-    "database": "vacancy_manager_db",
+    "database": "db_vacanxy_jwt",
     "host": "localhost",
     "port": 27017
   },

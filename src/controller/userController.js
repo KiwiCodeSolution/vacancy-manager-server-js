@@ -1,31 +1,66 @@
-const UserModel = require("../dbMongo/models/userModel");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const httpErrors = require("http-errors");
+const { validationResult } = require("express-validator");
+const { secret } = require("../config/config");
+const UserModel = require("../dbMongo/models/UserModel");
 
-module.exports.createUser = async (req, res) => {
-  console.log(req.body);
-  const { body } = req;
-  const user = await UserModel.create(body);
-
-  res.status(201).send({ data: user });
+const generateAccessToken = (id) => {
+  const payload = {
+    id,
+  };
+  return jwt.sign(payload, secret, { expiresIn: "24h" });
 };
 
-module.exports.getUsers = async (req, res) => {
-  const getUsers = await UserModel.find();
+module.exports.registration = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw httpErrors(400, "ошибка при валидации");
+  }
+  const { username, password, email } = req.body;
+  const candidate = await UserModel.findOne({ email });
+  if (candidate) {
+    throw httpErrors(400, "пользователь с таким именем уже существует");
+  }
 
-  res.status(200).send({ data: getUsers });
+  const hashPassword = bcrypt.hashSync(password, 7);
+  const user = new UserModel({
+    username,
+    password: hashPassword,
+    email,
+    userToken: null,
+  });
+  await user.save();
+  return res.json({ message: "Пользователь успешно зарегестрирован" });
 };
 
 module.exports.login = async (req, res) => {
+  const { username, password, email } = req.body;
+  const user = await UserModel.findOne({ email });
+  if (!user) {
+    throw httpErrors(400, `пользователь ${username} не найден `);
+  }
+  const validPassword = bcrypt.compareSync(password, user.password);
+  if (!validPassword) {
+    throw httpErrors(400, "введен не верный пароль");
+  }
+  const token = generateAccessToken(user._id);
 
-  res.json({ request: req.body });
+  user.userToken = token;
+  await user.save();
+
+  return res.json({ user }); //user
 };
 
 module.exports.logout = async (req, res) => {
-
-  res.json({ request: req.body });
+  const userToken = req.headers.authorization.split(" ");
+  const user = await UserModel.findOne({ userToken });
+  user.userToken = null;
+  await user.save();
+  return res.json({ message: "User logOut" });
 };
 
-module.exports.currentUser = async (req, res) => {
-  const { name, email } = req.user;
-  
-  res.json({ user: { name, email } });
+module.exports.getUser = async (req, res) => {
+  const getUsers = await UserModel.find();
+  res.status(200).send({ data: getUsers });
 };
