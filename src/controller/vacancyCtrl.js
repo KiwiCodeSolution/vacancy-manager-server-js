@@ -1,4 +1,4 @@
-const { VacancyModel } = require("../dbMongo/models/vacancyModel");
+const { VacancyModel } = require("../dbMongo/models/VacancyModel");
 const httpErrors = require("http-errors");
 
 const get = async (req, res) => {
@@ -25,6 +25,7 @@ const remove = async (req, res) => {
 };
 
 const update = async (req, res) => {
+    console.log("update vacancy");
     const { id, companyName, companyURL, source, sourceURL, position, salary, status, rank } = req.body;
     if (!companyName && !companyURL && !source && !sourceURL && !position && !salary && !status && !rank) throw httpErrors(400, "no fields to update");
 

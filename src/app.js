@@ -15,6 +15,12 @@ app.use((req, res) => {
 });
 
 app.use(async (err, req, res) => {
+  console.log("route not found");
+  const { status = 500, message = "Server error" } = err;
+  res.status(status).json({ message });
+});
+
+app.use(async (err, req, res, next) => {
   const { status = 500, message = "Server error" } = err;
   res.status(status).json({ message });
 });
