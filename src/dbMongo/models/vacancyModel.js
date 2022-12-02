@@ -9,6 +9,7 @@ const VacancySchema = new Schema({
   position: { type: String },
   salary: { type: Number },
   status: { type: String },
+  notes: {type: String},
   rank: { type: Number }
 }, {
   versionKey: false,
@@ -23,6 +24,7 @@ const joiCreateVacancy = Joi.object({
   position: Joi.string().min(3).max(15),
   salary: Joi.number().min(0).max(999999),
   status: Joi.string(),
+  notes: Joi.string().max(500),
   rank: Joi.number().min(1).max(5)
 });
 
@@ -35,6 +37,7 @@ const joiUpdateVacancy = Joi.object({
   position: Joi.string().min(3).max(15),
   salary: Joi.number().min(0).max(999999),
   status: Joi.string(),
+  notes: Joi.string().max(500),
   rank: Joi.number().min(1).max(5)
 });
 

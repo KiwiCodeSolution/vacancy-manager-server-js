@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const mainRouter = require("./routes/mainRouter");
 const vacancyRouter = require("./routes/vacancies");
 const authRouter = require("./routes/authRouter");
 
@@ -7,6 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use("/", mainRouter);
 app.use("/auth", authRouter);
 app.use("/vacancy", vacancyRouter);
 
