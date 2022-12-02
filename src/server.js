@@ -1,5 +1,5 @@
 const app = require("./app");
-const mongoose = require('./dbMongo/mongoose/mongoose');
+const mongoose = require("./dbMongo/mongoose/mongoose");
 
 const PORT = process.env.PORT || 5000;
 const server = async () => {
@@ -11,5 +11,5 @@ const server = async () => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 server();

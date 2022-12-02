@@ -1,15 +1,15 @@
-const {Schema, model} = require("mongoose");
+const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
 const VacancySchema = new Schema({
   companyName: { type: String, required: true },
-  companyURL: {type: String},
-  source: {type: String},
-  sourceURL: {type: String},
-  position: {type: String},
-  salary: {type: Number},
-  status: {type: String},
-  rank: {type: Number}
+  companyURL: { type: String },
+  source: { type: String },
+  sourceURL: { type: String },
+  position: { type: String },
+  salary: { type: Number },
+  status: { type: String },
+  rank: { type: Number }
 }, {
   versionKey: false,
   timestamps: true
