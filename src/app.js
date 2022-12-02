@@ -2,11 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const vacancyRouter = require("./routes/vacancies");
 const authRouter = require("./routes/authRouter");
+// const img = require("./img");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+app.get("/", (req, res) => {
+  res.status(400).send("<h1> kiwicode.tech</h1 > ");
+});
 app.use("/auth", authRouter);
 app.use("/vacancy", vacancyRouter);
 

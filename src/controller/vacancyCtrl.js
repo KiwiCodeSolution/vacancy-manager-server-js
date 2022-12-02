@@ -1,4 +1,4 @@
-const { VacancyModel } = require("../dbMongo/models/VacancyModel");
+const { VacancyModel } = require("../dbMongo/models/vacancyModel");
 const httpErrors = require("http-errors");
 
 const get = async (req, res) => {
