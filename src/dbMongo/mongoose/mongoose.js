@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
-const config = require("../../config/mongoConfig.json");
+// const config = require("../../config/mongoConfig.json");
 require("dotenv").config();
-// const { DB_HOST } = process.env;
+const { DB_HOST } = process.env;
+
 module.exports = mongoose
-  // .connect(DB_HOST)
-  .connect(`mongodb://${config.development.host}:${config.development.port}/${config.development.database}`)
+  .connect(DB_HOST)
+  // .connect(`mongodb://${config.development.host}:${config.development.port}/${config.development.database}`)
   .then(() => {
     console.log("mongodb run");
   })

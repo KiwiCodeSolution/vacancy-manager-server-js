@@ -22,7 +22,7 @@ const joiCreateVacancy = Joi.object({
   sourceURL: Joi.string(),
   position: Joi.string().min(3).max(15),
   salary: Joi.number().min(0).max(999999),
-  status: Joi.number(),
+  status: Joi.string(),
   rank: Joi.number().min(1).max(5)
 });
 
