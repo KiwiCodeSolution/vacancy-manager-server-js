@@ -3,8 +3,6 @@ const cors = require("cors");
 const mainRouter = require("./routes/mainRouter");
 const vacancyRouter = require("./routes/vacancies");
 const authRouter = require("./routes/authRouter");
-// const img = require("./img");
-
 const app = express();
 app.use(cors());
 app.use(express.json());
