@@ -1,4 +1,4 @@
-const validation = (schema) => (req, res, next) => {
+const validation = (schema) => (req, _, next) => {
     const { error } = schema.validate(req.body);
     if (error) {
         error.status = 400;
