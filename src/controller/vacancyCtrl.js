@@ -18,14 +18,19 @@ const create = async (req, res) => {
     });
 };
 const remove = async (req, res) => {
-    await VacancyModel.findByIdAndDelete(req.body.id);
+    const { id } = req.params;
+    if (!id) throw httpErrors (400, "id in params is required");
+
+    const result = await VacancyModel.findByIdAndDelete( id );
+    if (!result) throw httpErrors (404, `A vacancy with id:${id} not found`);
+    
     res.json({
         message: "Vacancy removed",
     });
 };
 
 const update = async (req, res) => {
-    console.log("update vacancy");
+
     const { id, companyName, companyURL, source, sourceURL, position, salary, status, rank } = req.body;
     if (!companyName && !companyURL && !source && !sourceURL && !position && !salary && !status && !rank) throw httpErrors(400, "no fields to update");
 
