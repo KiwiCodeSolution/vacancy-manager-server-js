@@ -1,18 +1,19 @@
-const httpErrors = require("http-errors");
+const { Conflict, BadRequest, NotFound } = require("http-errors");
 const { QuickLinksModel } = require("../dbMongo/models/quickLinksModel");
 
-const get = async (_, res) => {
-    const links = await QuickLinksModel.find();
+const get = async (req, res) => {
+    const {userId} = req.body;
+    const links = await QuickLinksModel.find({userId});
     res.json({ links });
 };
 
 const create = async ( req, res ) => {
-    const { linkName, link } = req.body;
+    const { userId, linkName, link } = req.body;
 
-    const newLinkName = await QuickLinksModel.findOne({ linkName });
-    if (newLinkName) throw httpErrors(409, "link name already exist");
+    const newLinkName = await QuickLinksModel.findOne({ userId, linkName });
+    if (newLinkName) throw Conflict("link name already exist");
 
-    const newLink = await QuickLinksModel.create({ linkName, link });
+    const newLink = await QuickLinksModel.create({ userId, linkName, link });
     res.json({
         message: "A new link created successfully",
         newLink
@@ -21,10 +22,11 @@ const create = async ( req, res ) => {
 
 const remove = async ( req, res ) => {
     const { id } = req.params;
-    if (!id) throw httpErrors (400, "id in params is required");
+    const { userId } = req.body;
+    if (!id) throw BadRequest ("id in params is required");
 
-    const result = await QuickLinksModel.findByIdAndDelete( id );
-    if (!result) throw httpErrors (404, `A link with id:${id} not found`);
+    const result = await QuickLinksModel.findOneAndDelete( {_id: id, userId } );
+    if (!result) throw NotFound (`A link with id:${id} not found`);
 
     res.json({
         message: "Vacancy removed successfully",
@@ -33,10 +35,10 @@ const remove = async ( req, res ) => {
 
 const update = async ( req, res ) => {
 
-    const { id, linkName, link } = req.body;
+    const { userId, id, linkName, link } = req.body;
     if (!linkName && !link) throw httpErrors(400, "no fields to update");
 
-    const newVacancy = await QuickLinksModel.findByIdAndUpdate(id, { linkName, link }, { new: true });
+    const newVacancy = await QuickLinksModel.findOneAndUpdate({_id: id, userId }, { linkName, link }, { new: true });
     res.json({
         message: "Vacancy updated",
         newVacancy

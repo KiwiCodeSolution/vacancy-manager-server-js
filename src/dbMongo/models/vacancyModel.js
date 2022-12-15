@@ -2,6 +2,7 @@ const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
 const VacancySchema = new Schema({
+  userId: { type: String, required: true },
   companyName: { type: String, required: true },
   companyURL: { type: String },
   source: { type: String },
@@ -9,7 +10,7 @@ const VacancySchema = new Schema({
   position: { type: String },
   salary: { type: Number },
   status: { type: String },
-  notes: {type: String},
+  notes: { type: String },
   rank: { type: Number }
 }, {
   versionKey: false,
@@ -17,6 +18,7 @@ const VacancySchema = new Schema({
 });
 
 const joiCreateVacancy = Joi.object({
+  userId: Joi.string().required(),
   companyName: Joi.string().min(3).max(30).required(),
   companyURL: Joi.string(), // validate for URL ?
   source: Joi.string().min(3).max(15),
@@ -29,6 +31,7 @@ const joiCreateVacancy = Joi.object({
 });
 
 const joiUpdateVacancy = Joi.object({
+  userId: Joi.string().required(),
   id: Joi.string().required(),
   companyName: Joi.string().min(3).max(30),
   companyURL: Joi.string(), // validate for URL ?
