@@ -10,6 +10,6 @@ router.post("/", auth, validation(joiCreateVacancy), ctrlWrapper(vacancy.create)
 
 router.put("/", auth, validation(joiUpdateVacancy), ctrlWrapper(vacancy.update));
 
-router.delete("/", auth, ctrlWrapper(vacancy.remove));
+router.delete("/:id", auth, ctrlWrapper(vacancy.remove));
 
 module.exports = router;

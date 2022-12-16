@@ -1,8 +1,8 @@
 const { VacancyModel } = require("../dbMongo/models/vacancyModel");
-const httpErrors = require("http-errors");
+const { BadRequest, NotFound } = require("http-errors");
 
 const get = async (req, res) => {
-    const result = await VacancyModel.find(req.query);
+    const result = await VacancyModel.find({userId: req.body.userId, ...req.query});
     res.json({
         qtty: result.length,
         result
@@ -10,8 +10,8 @@ const get = async (req, res) => {
 };
 
 const create = async (req, res) => {
-    const { companyName, companyURL, source, sourceURL, position, salary, status = "new", rank = 1 } = req.body;
-    const result = await VacancyModel.create({ companyName, companyURL, source, sourceURL, position, salary, status, rank });
+    const { userId, companyName, companyURL, source, sourceURL, position, salary, status = "new", rank = 1 } = req.body;
+    const result = await VacancyModel.create({ userId, companyName, companyURL, source, sourceURL, position, salary, status, rank });
     res.json({
         message: "Vacancy created",
         result
@@ -19,22 +19,21 @@ const create = async (req, res) => {
 };
 const remove = async (req, res) => {
     const { id } = req.params;
-    if (!id) throw httpErrors (400, "id in params is required");
 
-    const result = await VacancyModel.findByIdAndDelete( id );
-    if (!result) throw httpErrors (404, `A vacancy with id:${id} not found`);
-    
+    const result = await VacancyModel.findOneAndDelete( { _id: id, userId: req.body.userId } );
+    if (!result) throw NotFound (`A vacancy with id:${id} not found`);
     res.json({
         message: "Vacancy removed",
+        result
     });
 };
 
 const update = async (req, res) => {
-
-    const { id, companyName, companyURL, source, sourceURL, position, salary, status, rank } = req.body;
+    const { userId, id, companyName, companyURL, source, sourceURL, position, salary, status, rank } = req.body;
     if (!companyName && !companyURL && !source && !sourceURL && !position && !salary && !status && !rank) throw httpErrors(400, "no fields to update");
 
-    const newVacancy = await VacancyModel.findByIdAndUpdate(id, { companyName, companyURL, source, sourceURL, position, salary, status, rank }, { new: true });
+    const newVacancy = await VacancyModel.findOneAndUpdate({ _id: id, userId }, { companyName, companyURL, source, sourceURL, position, salary, status, rank }, { new: true });
+    if (!newVacancy) throw NotFound (`A vacancy with id:${id} not found`);
     res.json({
         message: "Vacancy updated",
         newVacancy
