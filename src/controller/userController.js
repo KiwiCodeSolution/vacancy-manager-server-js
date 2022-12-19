@@ -5,12 +5,7 @@ const { validationResult } = require("express-validator");
 const { secret } = require("../config/config");
 const UserModel = require("../dbMongo/models/UserModel");
 
-const generateAccessToken = (id) => {
-  const payload = {
-    id,
-  };
-  return jwt.sign(payload, secret, { expiresIn: "24h" });
-};
+const generateAccessToken = id => jwt.sign({ id }, secret);
 
 module.exports.registration = async (req, res) => {
   const errors = validationResult(req);
@@ -48,14 +43,19 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.logout = async (req, res) => {
-  const userToken = req.headers.authorization.split(" ");
+  if (!req.headers.authorization) throw new Unauthorized();
+
+  const [bearer, userToken] = req.headers.authorization.split(" ");
   const user = await UserModel.findOne({ userToken });
+  if (!user) throw new Unauthorized();
+
   user.userToken = null;
   await user.save();
-  return res.json({ message: "User logOut" });
+
+  return res.json({ message: "User logged out" });
 };
 
 module.exports.getUser = async (req, res) => {
   const getUsers = await UserModel.find();
-  res.status(200).send({ data: getUsers });
+  res.send({ data: getUsers });
 };
