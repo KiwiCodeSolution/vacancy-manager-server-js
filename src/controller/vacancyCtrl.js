@@ -36,6 +36,7 @@ const update = async (req, res) => {
 
     const newVacancy = await VacancyModel.findOneAndUpdate({ _id: id, userId }, { companyName, companyURL, source, sourceURL, position, salary, status, rank }, { new: true });
     if (!newVacancy) throw NotFound (`A vacancy with id:${id} not found`);
+    
     res.json({
         message: "Vacancy updated",
         newVacancy
