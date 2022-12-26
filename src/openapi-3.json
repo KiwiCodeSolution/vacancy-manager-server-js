@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:5000"
+      "url": "http://kiwicode.tech"
     }
   ],
   "tags": [
