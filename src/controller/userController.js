@@ -11,9 +11,9 @@ module.exports.registration = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) throw new BadRequest("ошибка при валидации");
 
-  const { username, password, email } = req.body;
+  const { username = "unonymous", password, email } = req.body;
   const candidate = await UserModel.findOne({ email });
-  if (candidate) throw new Conflict("пользователь с таким именем уже существует");
+  if (candidate) throw new Conflict("пользователь с таким имейлом уже существует");
 
   const hashPassword = bcrypt.hashSync(password, 7);
   const user = new UserModel({
@@ -32,7 +32,7 @@ module.exports.login = async (req, res) => {
   if (!user) throw new NotFound(`пользователь ${username} не найден `);
 
   const validPassword = bcrypt.compareSync(password, user.password);
-  if (!validPassword) throw new BadRequest("введен не верный пароль");
+  if (!validPassword) throw new BadRequest("введен неверный пароль");
 
   const token = generateAccessToken(user._id);
 
