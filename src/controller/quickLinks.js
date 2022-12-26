@@ -23,25 +23,24 @@ const create = async ( req, res ) => {
 const remove = async ( req, res ) => {
     const { id } = req.params;
     const { userId } = req.body;
-    if (!id) throw BadRequest ("id in params is required");
 
-    const result = await QuickLinksModel.findOneAndDelete( {_id: id, userId } );
+    const quickLink = await QuickLinksModel.findOneAndDelete( {_id: id, userId } );
     if (!result) throw NotFound (`A link with id:${id} not found`);
 
     res.json({
-        message: "Vacancy removed successfully",
+        message: "Quick Link removed successfully",
+        quickLink
     });
 };
 
 const update = async ( req, res ) => {
-
     const { userId, id, linkName, link } = req.body;
     if (!linkName && !link) throw httpErrors(400, "no fields to update");
 
     const newVacancy = await QuickLinksModel.findOneAndUpdate({_id: id, userId }, { linkName, link }, { new: true });
     res.json({
-        message: "Vacancy updated",
-        newVacancy
+        message: "Quick Link updated",
+        newQuickLink
     });
 };
 

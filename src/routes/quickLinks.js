@@ -11,6 +11,6 @@ router.post( "/", auth, validation(joiCreateQuickLink), ctrlWrapper(quickLinks.c
 
 router.put( "/", auth, validation(joiUpdateQuickLink), ctrlWrapper(quickLinks.update) );
 
-router.delete("/", auth, ctrlWrapper(quickLinks.remove));
+router.delete("/:id", auth, ctrlWrapper(quickLinks.remove));
 
 module.exports = router;
