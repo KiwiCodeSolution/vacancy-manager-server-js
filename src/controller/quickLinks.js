@@ -2,7 +2,7 @@ const { Conflict, BadRequest, NotFound } = require("http-errors");
 const { QuickLinksModel } = require("../dbMongo/models/quickLinksModel");
 
 const get = async (req, res) => {
-    const {userId} = req.body;
+    const { userId } = req.body;
     const links = await QuickLinksModel.find({userId});
     res.json({ links });
 };
@@ -23,25 +23,26 @@ const create = async ( req, res ) => {
 const remove = async ( req, res ) => {
     const { id } = req.params;
     const { userId } = req.body;
-    if (!id) throw BadRequest ("id in params is required");
 
-    const result = await QuickLinksModel.findOneAndDelete( {_id: id, userId } );
-    if (!result) throw NotFound (`A link with id:${id} not found`);
+    const quickLink = await QuickLinksModel.findOneAndDelete( {_id: id, userId } );
+    if (!quickLink) throw NotFound (`A link with id:${id} not found`);
 
     res.json({
-        message: "Vacancy removed successfully",
+        message: "Quick Link removed successfully",
+        quickLink
     });
 };
 
 const update = async ( req, res ) => {
-
     const { userId, id, linkName, link } = req.body;
     if (!linkName && !link) throw httpErrors(400, "no fields to update");
 
-    const newVacancy = await QuickLinksModel.findOneAndUpdate({_id: id, userId }, { linkName, link }, { new: true });
+    const newQuickLink = await QuickLinksModel.findOneAndUpdate({_id: id, userId }, { linkName, link }, { new: true });
+    if (!newQuickLink) throw NotFound (`A vacancy with id:${id} not found`);
+
     res.json({
-        message: "Vacancy updated",
-        newVacancy
+        message: "Quick Link updated",
+        newQuickLink
     });
 };
 

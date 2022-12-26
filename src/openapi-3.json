@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:5000"
+      "url": "http://kiwicode.tech"
     }
   ],
   "tags": [
@@ -25,6 +25,10 @@
     {
       "name": "cover letters",
       "description": "Access to a cover letters list"
+    },
+    {
+      "name": "sourses",
+      "description": "Access to a list of sourses"
     }
   ],
   "paths": {
@@ -47,12 +51,41 @@
           }
         },
         "responses": {
-          "default": {
+          "200": {
             "description": "successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "example": {
+                    "message": "Пользователь успешно зарегистрирован"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "ошибка при валидации"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict, that email already present in database",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "message": "пользователь с таким имейлом уже существует"
+                  }
                 }
               }
             }
@@ -81,15 +114,27 @@
           "200": {
             "description": "successful operation",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "object",
+                  "example": {
+                    "user": {
+                      "_id": "63a9808b8bd85b0774c5fb37",
+                      "username": "Aleksander",
+                      "password": "$2a$07$wkeUjyagGf1sU0ucxYIddOHyk8W/LtRNgFzFFYvuOwb856c8iGX5i",
+                      "email": "nt@ukr.net",
+                      "userToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYTk4MDhiOGJkODViMDc3NGM1ZmIzNyIsImlhdCI6MTY3MjA1MzY0MH0.KaiCpjB7CTQCQLLnyK8XUBmfywaycDc0jIG4c_UC7WI"
+                    }
+                  }
                 }
               }
             }
           },
           "400": {
             "description": "Invalid username/password supplied"
+          },
+          "404": {
+            "description": "пользователь lorem@ukr.net не найден "
           }
         }
       }
@@ -104,8 +149,29 @@
         "operationId": "logoutUser",
         "parameters": [],
         "responses": {
-          "default": {
-            "description": "successful operation"
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "User logged out"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "message": "пользователь с таким имейлом уже существует"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -279,9 +345,13 @@
         ],
         "type": "object",
         "properties": {
-          "id": {
+          "email": {
             "type": "string",
-            "example": null
+            "example": "nt@ukr.net"
+          },
+          "password": {
+            "type": "string",
+            "example": "1234356"
           }
         }
       },
