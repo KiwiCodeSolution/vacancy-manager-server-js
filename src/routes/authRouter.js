@@ -13,6 +13,9 @@ router.post("/register", [
 ], ctrlWrapper(controller.registration));
 router.post("/login", ctrlWrapper(controller.login));
 router.get("/logout", auth, ctrlWrapper(controller.logout));
-router.get("/users", auth, ctrlWrapper(controller.getUser));
+router.get("/current", auth, ctrlWrapper(controller.getCurrent));
+
+// FOR TESTING ONLY - delete before production
+router.get("/users", ctrlWrapper(controller.getUser));
 
 module.exports = router;

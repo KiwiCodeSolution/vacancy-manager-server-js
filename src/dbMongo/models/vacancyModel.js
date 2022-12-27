@@ -18,12 +18,11 @@ const VacancySchema = new Schema({
 });
 
 const joiCreateVacancy = Joi.object({
-  userId: Joi.string().required(),
   companyName: Joi.string().min(3).max(30).required(),
   companyURL: Joi.string(), // validate for URL ?
-  source: Joi.string().min(3).max(15),
+  source: Joi.string().min(3).max(20),
   sourceURL: Joi.string(),
-  position: Joi.string().min(3).max(15),
+  position: Joi.string().min(3).max(30),
   salary: Joi.number().min(0).max(999999),
   status: Joi.string(),
   notes: Joi.string().max(500),
@@ -31,13 +30,12 @@ const joiCreateVacancy = Joi.object({
 });
 
 const joiUpdateVacancy = Joi.object({
-  userId: Joi.string().required(),
   id: Joi.string().required(),
   companyName: Joi.string().min(3).max(30),
   companyURL: Joi.string(), // validate for URL ?
-  source: Joi.string().min(3).max(15),
+  source: Joi.string().min(3).max(20),
   sourceURL: Joi.string(),
-  position: Joi.string().min(3).max(15),
+  position: Joi.string().min(3).max(30),
   salary: Joi.number().min(0).max(999999),
   status: Joi.string(),
   notes: Joi.string().max(500),

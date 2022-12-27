@@ -39,23 +39,23 @@ module.exports.login = async (req, res) => {
   user.userToken = token;
   await user.save();
 
-  return res.json({ user }); //user
+  res.json({ user });
 };
 
 module.exports.logout = async (req, res) => {
-  if (!req.headers.authorization) throw new Unauthorized();
+  req.user.userToken = null;
+  await req.user.save();
 
-  const [bearer, userToken] = req.headers.authorization.split(" ");
-  const user = await UserModel.findOne({ userToken });
-  if (!user) throw new Unauthorized();
-
-  user.userToken = null;
-  await user.save();
-
-  return res.json({ message: "User logged out" });
+  res.json({ message: "User logged out" });
 };
 
-module.exports.getUser = async (req, res) => {
+module.exports.getUser = async (_req, res) => {
   const getUsers = await UserModel.find();
   res.send({ data: getUsers });
 };
+
+module.exports.getCurrent = async (req, res) => {
+  console.log("getCurrent");
+  const { username, email } = req.user;
+  res.json({ username, email });
+}
