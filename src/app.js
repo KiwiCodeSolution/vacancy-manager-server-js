@@ -9,6 +9,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.status(400).send("<h1> kiwicode.tech</h1 > ");
+});
 app.use("/", mainRouter);
 app.use("/auth", authRouter);
 app.use("/vacancy", vacancyRouter);
@@ -23,4 +26,4 @@ app.use(async (err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-module.exports = app;
+module.exports = app
