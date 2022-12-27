@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://kiwicode.tech"
+      "url": "http://localhost:5000"
     }
   ],
   "tags": [
@@ -167,7 +167,7 @@
               "application/json": {
                 "schema": {
                   "example": {
-                    "message": "пользователь с таким имейлом уже существует"
+                    "message": "Unauthorized"
                   }
                 }
               }
@@ -181,8 +181,8 @@
         "tags": [
           "auth"
         ],
-        "summary": "Return a data of a current Logged in User",
-        "description": "Creates list of users with given input array",
+        "summary": "Return a data of a current Logged User",
+        "description": "Bearer token in header required",
         "operationId": "createUsersWithListInput",
         "responses": {
           "200": {
@@ -195,8 +195,8 @@
               }
             }
           },
-          "default": {
-            "description": "successful operation"
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
