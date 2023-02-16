@@ -20,7 +20,8 @@ module.exports.registration = async (req, res) => {
     username,
     password: hashPassword,
     email,
-    userToken: null,
+    token: null,
+    data: {avatar:"", phoneNumber:"", positoin:""}
   });
   await user.save();
   return res.json({ message: "Пользователь успешно зарегистрирован" });
@@ -36,14 +37,14 @@ module.exports.login = async (req, res) => {
 
   const token = generateAccessToken(user._id);
 
-  user.userToken = token;
+  user.token = token;
   await user.save();
 
   res.json({ user });
 };
 
 module.exports.logout = async (req, res) => {
-  req.user.userToken = null;
+  req.user.token = null;
   await req.user.save();
 
   res.json({ message: "User logged out" });
