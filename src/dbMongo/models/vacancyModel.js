@@ -10,8 +10,9 @@ const VacancySchema = new Schema({
   position: { type: String },
   salary: { type: Number },
   status: { type: String },
-  notes: { type: String },
-  rank: { type: Number }
+  actions: [Object],
+  notes: [Object],
+  userRank: { type: Number }
 }, {
   versionKey: false,
   timestamps: true
@@ -24,9 +25,10 @@ const joiCreateVacancy = Joi.object({
   sourceURL: Joi.string(),
   position: Joi.string().min(3).max(30),
   salary: Joi.number().min(0).max(999999),
-  status: Joi.string(),
-  notes: Joi.string().max(500),
-  rank: Joi.number().min(1).max(5)
+  status: Joi.string().max(20),
+  actions: Joi.array().items({date: Joi.number(), name: Joi.string().max(20), deadline: Joi.number()}),
+  notes: Joi.array().items({date: Joi.number(), text: Joi.string().max(500)}).max(20),
+  userRank: Joi.number().min(1).max(5)
 });
 
 const joiUpdateVacancy = Joi.object({
@@ -37,9 +39,10 @@ const joiUpdateVacancy = Joi.object({
   sourceURL: Joi.string(),
   position: Joi.string().min(3).max(30),
   salary: Joi.number().min(0).max(999999),
-  status: Joi.string(),
-  notes: Joi.string().max(500),
-  rank: Joi.number().min(1).max(5)
+  status: Joi.string().max(20),
+  actions: Joi.array().items({date: Joi.number(), name: Joi.string().max(20), deadline: Joi.number()}),
+  notes: Joi.array().items({date: Joi.number(), text: Joi.string().max(500)}).max(20),
+  userRank: Joi.number().min(1).max(5)
 });
 
 const VacancyModel = model("Vacancies", VacancySchema);
