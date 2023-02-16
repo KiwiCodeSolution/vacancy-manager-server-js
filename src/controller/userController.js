@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { BadRequest, Unauthorized, NotFound, Conflict } = require("http-errors");
+const { BadRequest, NotFound, Conflict } = require("http-errors");
 const { validationResult } = require("express-validator");
 const { secret } = require("../config/config");
 const UserModel = require("../dbMongo/models/UserModel");
@@ -21,16 +21,16 @@ module.exports.registration = async (req, res) => {
     password: hashPassword,
     email,
     token: null,
-    data: {avatar:"", phoneNumber:"", positoin:""}
+    data: {avatar:"", phoneNumber:"", position:""}
   });
   await user.save();
   return res.json({ message: "Пользователь успешно зарегистрирован" });
 };
 
 module.exports.login = async (req, res) => {
-  const { username, password, email } = req.body;
+  const { password, email } = req.body;
   const user = await UserModel.findOne({ email });
-  if (!user) throw new NotFound(`пользователь ${username} не найден `);
+  if (!user) throw new NotFound(`пользователь не найден`);
 
   const validPassword = bcrypt.compareSync(password, user.password);
   if (!validPassword) throw new BadRequest("введен неверный пароль");
@@ -46,8 +46,7 @@ module.exports.login = async (req, res) => {
 module.exports.logout = async (req, res) => {
   req.user.token = null;
   await req.user.save();
-
-  res.json({ message: "User logged out" });
+  res.json({ message: `User ${req.user.username} logged out` });
 };
 
 module.exports.getUser = async (_req, res) => {
