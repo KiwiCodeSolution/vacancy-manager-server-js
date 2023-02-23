@@ -10,5 +10,5 @@
   "jsxSingleQuote": false,
   "bracketSameLine": true,
   "jsxBracketSameLine": true,
-  "arrowParens": "always"
+  "arrowParens": "avoid"
 }
