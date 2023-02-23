@@ -21,10 +21,11 @@ module.exports.registration = async (req, res) => {
     password: hashPassword,
     email,
     token: null,
-    data: {avatar:"", phoneNumber:"", position:""}
+    profile: {avatar:"", phoneNumber:"", position:""}
   });
   await user.save();
-  return res.json({ message: "Пользователь успешно зарегистрирован" });
+  user.token = generateAccessToken(user._id);
+  return res.json({ message: "Пользователь успешно зарегистрирован", user });
 };
 
 module.exports.login = async (req, res) => {
@@ -35,11 +36,8 @@ module.exports.login = async (req, res) => {
   const validPassword = bcrypt.compareSync(password, user.password);
   if (!validPassword) throw new BadRequest("введен неверный пароль");
 
-  const token = generateAccessToken(user._id);
-
-  user.token = token;
+  user.token = generateAccessToken(user._id);
   await user.save();
-
   res.json({ user });
 };
 
