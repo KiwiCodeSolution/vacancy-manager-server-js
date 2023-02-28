@@ -11,6 +11,7 @@ router.post("/register", [
     check("password", "from 4 to 10 symbols").isLength({ min: 4, max: 10 })
 
 ], ctrlWrapper(controller.registration));
+router.get("/emailVerify", ctrlWrapper(controller.emailVerification));
 router.post("/login", ctrlWrapper(controller.login));
 router.get("/logout", auth, ctrlWrapper(controller.logout));
 router.get("/current", auth, ctrlWrapper(controller.getCurrent));

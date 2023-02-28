@@ -27,6 +27,16 @@ module.exports.registration = async (req, res) => {
   return res.json({ message: "Пользователь успешно зарегистрирован", user });
 };
 
+module.exports.emailVerification = async (req, res) => {
+
+  const { token } = req.query;
+  if (!token) throw new BadRequest();
+  user = await UserModel.findOne({token}).select("email token profile");
+  if (!user) throw new NotFound("user not Found");
+
+  res.json({user});
+}
+
 module.exports.login = async (req, res) => {
   const { password, email } = req.body;
   const user = await UserModel.findOne({ email });
