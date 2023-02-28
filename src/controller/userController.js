@@ -11,13 +11,12 @@ module.exports.registration = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) throw new BadRequest("ошибка при валидации");
 
-  const { username = "unonymous", password, email } = req.body;
+  const { password, email } = req.body;
   const candidate = await UserModel.findOne({ email });
   if (candidate) throw new Conflict("пользователь с таким имейлом уже существует");
 
   const hashPassword = bcrypt.hashSync(password, 7);
   const user = new UserModel({
-    username,
     password: hashPassword,
     email,
     token: null,
@@ -27,6 +26,16 @@ module.exports.registration = async (req, res) => {
   user.token = generateAccessToken(user._id);
   return res.json({ message: "Пользователь успешно зарегистрирован", user });
 };
+
+module.exports.emailVerification = async (req, res) => {
+
+  const { token } = req.query;
+  if (!token) throw new BadRequest();
+  user = await UserModel.findOne({token}).select("email token profile");
+  if (!user) throw new NotFound("user not Found");
+
+  res.json({user});
+}
 
 module.exports.login = async (req, res) => {
   const { password, email } = req.body;
@@ -44,7 +53,7 @@ module.exports.login = async (req, res) => {
 module.exports.logout = async (req, res) => {
   req.user.token = null;
   await req.user.save();
-  res.json({ message: `User ${req.user.username} logged out` });
+  res.json({ message: `User ${req.user.profile.username} logged out` });
 };
 
 module.exports.getUser = async (_req, res) => {
@@ -54,6 +63,6 @@ module.exports.getUser = async (_req, res) => {
 
 module.exports.getCurrent = async (req, res) => {
   console.log("getCurrent");
-  const { username, email } = req.user;
-  res.json({ username, email });
+  const { email, profile } = req.user;
+  res.json({ email, profile });
 }
