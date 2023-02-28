@@ -3,7 +3,7 @@ const cors = require("cors");
 const mainRouter = require("./routes/mainRouter");
 const vacancyRouter = require("./routes/vacancies");
 const authRouter = require("./routes/authRouter");
-const profileRouter = require("./routes/profileRouter")
+const profileRouter = require("./routes/profileRouter");
 // const quickLinksRouter = require("./routes/quickLinks");
 
 const app = express();
@@ -28,4 +28,4 @@ app.use(async (err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-module.exports = app
+module.exports = app;
