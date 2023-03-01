@@ -28,19 +28,18 @@ module.exports.registration = async (req, res) => {
 };
 
 module.exports.emailVerification = async (req, res) => {
-
   const { token } = req.query;
   if (!token) throw new BadRequest();
-  user = await UserModel.findOne({token}).select("email token profile");
+  const user = await UserModel.findOne({token}).select("email token profile");
   if (!user) throw new NotFound("user not Found");
 
   res.json({user});
-}
+};
 
 module.exports.login = async (req, res) => {
   const { password, email } = req.body;
   const user = await UserModel.findOne({ email });
-  if (!user) throw new NotFound(`пользователь не найден`);
+  if (!user) throw new NotFound("пользователь не найден");
 
   const validPassword = bcrypt.compareSync(password, user.password);
   if (!validPassword) throw new BadRequest("введен неверный пароль");
