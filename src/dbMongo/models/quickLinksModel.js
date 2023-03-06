@@ -11,7 +11,6 @@ const quickLinksSchema = new Schema({
 });
 
 const joiCreateQuickLink = Joi.object({
-    userId: Joi.string().required(),
     linkName: Joi.string().required(),
     link: Joi.string()
 });

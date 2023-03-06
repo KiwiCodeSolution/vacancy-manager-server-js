@@ -4,7 +4,7 @@ const mainRouter = require("./routes/mainRouter");
 const vacancyRouter = require("./routes/vacancies");
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
-// const quickLinksRouter = require("./routes/quickLinks");
+const quickLinksRouter = require("./routes/quickLinks");
 
 const app = express();
 app.use(cors());
@@ -17,7 +17,7 @@ app.use("/", mainRouter);
 app.use("/auth", authRouter);
 app.use("/vacancy", vacancyRouter);
 app.use("/profile", profileRouter);
-// app.use("/quickLinks", quickLinksRouter);
+app.use("/quickLinks", quickLinksRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });

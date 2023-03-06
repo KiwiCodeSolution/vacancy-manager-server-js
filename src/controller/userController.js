@@ -60,6 +60,10 @@ module.exports.login = async (req, res) => {
   res.json({ user });
 };
 
+module.exports.sendEmail = async () => {
+// найди юзера, внести его новый пароль в БД, отправь имейл с токеном
+};
+
 module.exports.logout = async (req, res) => {
   req.user.token = null;
   await req.user.save();

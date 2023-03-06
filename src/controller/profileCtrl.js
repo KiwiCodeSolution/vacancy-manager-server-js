@@ -1,4 +1,4 @@
-const { BadRequest, NotFound, Conflict } = require("http-errors");
+const { BadRequest } = require("http-errors");
 
 module.exports.update = async (req, res) => {
   const { profileData } = req.body;
@@ -7,7 +7,7 @@ module.exports.update = async (req, res) => {
   if (typeof(profileData) !== "object") throw new BadRequest("profileData shoul be an object");
   if (Array.isArray(profileData)) throw new BadRequest("profileData shoul be an object");
   
-  req.user.data = profileData
+  req.user.profile = { ...req.user.profile, profileData};
   await req.user.save();
-  res.json({message: "profile updated"})
-}
+  res.json({message: "profile updated"});
+};
