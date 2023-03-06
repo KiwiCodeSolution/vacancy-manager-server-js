@@ -13,18 +13,26 @@ module.exports.registration = async (req, res) => {
 
   const { password, email } = req.body;
   const candidate = await UserModel.findOne({ email });
-  if (candidate) throw new Conflict("пользователь с таким имейлом уже существует");
+  if (candidate) {
+    if (candidate.emailConfirmed) {
+      throw new Conflict("пользователь с таким имейлом уже существует");
+    } else {
+      throw new Conflict("Имейл не подтверждён, проверьте почту");
+    }
+  };
 
   const hashPassword = bcrypt.hashSync(password, 7);
   const user = new UserModel({
     password: hashPassword,
     email,
-    token: null,
+    emailConfirmed: false,
     profile: {avatar:"", phoneNumber:"", position:""}
   });
   await user.save();
   user.token = generateAccessToken(user._id);
-  return res.json({ message: "Пользователь успешно зарегистрирован", user });
+  await user.save();
+  // send an email with emailConfirmation link ...
+  return res.json({ message: "Пользователь успешно зарегистрирован" });
 };
 
 module.exports.emailVerification = async (req, res) => {
