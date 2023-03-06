@@ -30,7 +30,10 @@ module.exports.registration = async (req, res) => {
 module.exports.emailVerification = async (req, res) => {
   const { token } = req.query;
   if (!token) throw new BadRequest();
-  const user = await UserModel.findOne({token}).select("email token profile");
+
+  const user = await UserModel
+    .findOne({token})
+    .select({ email: 1, token: 1, profile: 1, _id: 0 });
   if (!user) throw new NotFound("user not Found");
 
   res.json({user});
@@ -61,7 +64,6 @@ module.exports.getUser = async (_req, res) => {
 };
 
 module.exports.getCurrent = async (req, res) => {
-  console.log("getCurrent");
-  const { email, profile } = req.user;
-  res.json({ email, profile });
-}
+  const { email, token, profile } = req.user;
+  res.json({ email, token, profile });
+};
