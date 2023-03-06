@@ -10,7 +10,6 @@ const create = async ( req, res ) => {
     const { linkName, link } = req.body;
 
     const newLinkName = await QuickLinksModel.findOne({ userId: req.user._id, linkName });
-    console.log("newLinkNam:", newLinkName);
     if (newLinkName) throw Conflict("link name already exist");
 
     const data = await QuickLinksModel.create({ userId: req.user._id, linkName, link });
@@ -24,7 +23,7 @@ const remove = async ( req, res ) => {
     const { id } = req.params;
 
     const data = await QuickLinksModel.findOneAndDelete( {_id: id, userId: req.user._id } );
-    if (!data) throw new NotFound (`A link with id:${id} not found`);
+    if (!data) throw NotFound (`A link with id:${id} not found`);
 
     res.json({
         message: "Quick Link removed successfully",
@@ -34,7 +33,7 @@ const remove = async ( req, res ) => {
 
 const update = async ( req, res ) => {
     const { id, linkName, link } = req.body;
-    if (!linkName && !link) throw new BadRequest(400, "no fields to update");
+    if (!linkName && !link) throw BadRequest("no fields to update");
 
     const data = await QuickLinksModel.findOneAndUpdate({_id: id, userId: req.user._id }, { linkName, link }, { new: true });
     if (!data) throw NotFound (`A vacancy with id:${id} not found`);

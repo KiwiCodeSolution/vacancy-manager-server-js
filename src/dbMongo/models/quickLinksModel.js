@@ -16,7 +16,6 @@ const joiCreateQuickLink = Joi.object({
 });
 
 const joiUpdateQuickLink = Joi.object({
-    userId: Joi.string().required(),
     id: Joi.string().required(),
     linkName: Joi.string(),
     link: Joi.string()
