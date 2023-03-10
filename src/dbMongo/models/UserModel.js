@@ -1,10 +1,12 @@
 const { Schema, model } = require("mongoose");
 const User = new Schema({
-	password: { type: String, required: true },
 	email: { type: String, unique: true, required: true },
+	password: String,
+	passwordGoogle: String,
 	emailConfirmed: Boolean,
 	token: String,
-	profile: Object
+	profile: Object,
+	profileGoogle: Object
 },
 {
 	versionKey: false,
