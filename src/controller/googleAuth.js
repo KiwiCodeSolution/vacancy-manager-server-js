@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { BadRequest } = require("http-errors");
+// const { BadRequest } = require("http-errors");
 const UserModel = require("../dbMongo/models/UserModel");
 
 module.exports.googleAuth = async (req, res) => {
