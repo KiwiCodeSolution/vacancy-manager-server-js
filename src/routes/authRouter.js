@@ -8,8 +8,8 @@ const auth = require("../middlewares/authMiddleware");
 const ctrlWrapper = require("../middlewares/ctrlWrapper");
 
 router.post("/register", [
-    check("username", "username is required").notEmpty(),
-    check("password", "from 4 to 10 symbols").isLength({ min: 4, max: 10 })
+    // check("username", "username is required").notEmpty(),
+    check("password", "from 8 to 32 symbols").isLength({ min: 8, max: 32 })
 
 ], ctrlWrapper(controller.registration));
 router.get("/emailVerify", ctrlWrapper(controller.emailVerification));
