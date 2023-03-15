@@ -15,6 +15,6 @@ module.exports = async function (req, res, next) {
         req.user = user;
         next();
     } catch ({ message }) {
-        res.json({ message })
+        res.json({ message });
     }
 };

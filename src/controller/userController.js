@@ -67,7 +67,7 @@ module.exports.sendEmail = async () => {
 module.exports.logout = async (req, res) => {
   req.user.token = null;
   await req.user.save();
-  res.json({ message: `User ${req.user.profile.username} logged out` });
+  res.json({ message: `User ${req.user.email} logged out` });
 };
 
 module.exports.getUser = async (_req, res) => {
