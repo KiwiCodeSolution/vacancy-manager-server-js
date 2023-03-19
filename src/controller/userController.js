@@ -77,5 +77,7 @@ module.exports.getUser = async (_req, res) => {
 
 module.exports.getCurrent = async (req, res) => {
   const { email, token, profile } = req.user;
+  const { currProfile } = req.query;
+  if(currProfile === "google") return res.json({ email, token, profile: {...profile, ...req.user.profileGoogle} }); 
   res.json({ email, token, profile });
 };
