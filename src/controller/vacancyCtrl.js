@@ -7,7 +7,7 @@ const get = async (req, res) => {
 };
 
 const create = async (req, res) => {
-    const { companyName, companyURL, source, sourceURL, position = "", salary, currency = "USD", notes, status = "new", userRank = 1, cardColor = "app-grey" } = req.body.data;
+    const { companyName, companyURL, source, sourceURL, position = "", salary, currency = "USD", notes, status = "new", userRank = 1, cardColor = "app-grey" } = req.body;
     const data = await VacancyModel.create({ userId: req.user._id, companyName, companyURL, source, sourceURL, position, salary, currency, notes, status, userRank, cardColor, archived: false });
 
     res.json({
@@ -28,7 +28,7 @@ const remove = async (req, res) => {
 };
 
 const update = async (req, res) => {
-    const { id, companyName, companyURL, source, sourceURL, position, salary, status, actions, notes, userRank, cardColor } = req.body.data;
+    const { id, companyName, companyURL, source, sourceURL, position, salary, status, actions, notes, userRank, cardColor } = req.body;
     if (!companyName && !companyURL && !source && !sourceURL && !position && !salary && !status && !actions && !notes && !userRank && !cardColor) throw BadRequest("no fields to update");
 
     const data = await VacancyModel.findOneAndUpdate({ _id: id, userId: req.user._id }, { companyName, companyURL, source, sourceURL, position, salary, status, actions, notes, userRank, cardColor }, { new: true });
