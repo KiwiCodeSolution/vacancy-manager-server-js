@@ -16,8 +16,18 @@ module.exports.registration = async (req, res) => {
   if (candidate) {
     if (candidate.emailConfirmed) {
       throw new Conflict("пользователь с таким имейлом уже существует");
-    } else {
-      throw new Conflict("Имейл не подтверждён, проверьте почту");
+    } else { // Почта не подтверждена
+      if (candidate.verificationCode) {// Если есть код, 
+        throw new Conflict("Имейл не подтверждён, проверьте почту");
+      } else { // делаем проверочный verificationCode и высылаем повторно
+        candidate.verificationCode = generateAccessToken(candidate._id);
+        await candidate.save();
+        // send an email with emailConfirmation link ...
+        return res.json({
+          message: `на почту ${candidate.email} выслано письмо с подтверждением`,
+          verificationCode: candidate.verificationCode // УДАЛИТЬ, когда сделаем отправку письма
+        });
+      }
     }
   };
 
@@ -29,22 +39,29 @@ module.exports.registration = async (req, res) => {
     profile: {avatar:"", phoneNumber:"", position:""}
   });
   await user.save();
-  user.token = generateAccessToken(user._id);
+  user.verificationCode = generateAccessToken(user._id);
   await user.save();
   // send an email with emailConfirmation link ...
-  return res.json({ message: "Пользователь успешно зарегистрирован" });
+  return res.json({
+    message: `на почту ${user.email} выслано письмо с подтверждением`,
+    verificationCode: user.verificationCode // УДАЛИТЬ, когда сделаем отправку письма
+  });
 };
 
 module.exports.emailVerification = async (req, res) => {
-  const { token } = req.query;
-  if (!token) throw new BadRequest();
+  const { verificationCode } = req.query;
+  if (!verificationCode) throw new BadRequest();
 
-  const user = await UserModel
-    .findOne({token})
-    .select({ email: 1, token: 1, profile: 1, _id: 0 });
+  const user = await UserModel.findOne({verificationCode});
   if (!user) throw new NotFound("user not Found");
-
-  res.json({user});
+  user.emailConfirmed = true;
+  user.verificationCode = "";
+  user.token = generateAccessToken(user._id);
+  user.save();
+  res.json({
+    message: "e-mail confirmed successfully",
+    user: {email: user.email, profile: user.profile, token: user.token}
+  });
 };
 
 module.exports.login = async (req, res) => {
@@ -53,7 +70,7 @@ module.exports.login = async (req, res) => {
   if (!user) throw new NotFound("user not Found");
 
   if (!user.password) { // небыло регистрации через почту
-    throw new BadRequest("User wasn't registered by e-mail, try to enter by Google authorization")
+    throw new BadRequest("User wasn't registered by e-mail, try to enter by Google authorization");
   }
   const validPassword = bcrypt.compareSync(password, user.password);
   if (!validPassword) throw new BadRequest("Bad password");

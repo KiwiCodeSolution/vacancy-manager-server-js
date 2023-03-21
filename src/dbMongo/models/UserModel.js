@@ -5,6 +5,7 @@ const User = new Schema({
 	passwordGoogle: String,
 	emailConfirmed: Boolean,
 	token: String,
+	verificationCode: String,
 	profile: Object,
 	profileGoogle: Object
 },
