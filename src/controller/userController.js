@@ -50,10 +50,15 @@ module.exports.emailVerification = async (req, res) => {
 module.exports.login = async (req, res) => {
   const { password, email } = req.body;
   const user = await UserModel.findOne({ email });
-  if (!user) throw new NotFound("пользователь не найден");
+  if (!user) throw new NotFound("user not Found");
 
+  if (!user.password) { // небыло регистрации через почту
+    throw new BadRequest("User wasn't registered by e-mail, try to enter by Google authorization")
+  }
   const validPassword = bcrypt.compareSync(password, user.password);
-  if (!validPassword) throw new BadRequest("введен неверный пароль");
+  if (!validPassword) throw new BadRequest("Bad password");
+
+  if (!user.emailConfirmed) throw new BadRequest("E-mail confirmation required");
 
   user.token = generateAccessToken(user._id);
   await user.save();

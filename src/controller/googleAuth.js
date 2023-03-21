@@ -20,8 +20,8 @@ module.exports.googleAuth = async (req, res) => {
       return res.json({ email: user.email, profile: user.profileGoogle, token: user.token });
     };
     // const validPassword = bcrypt.compareSync(sub, user.passwordGoogle);
-    // if (!validPassword) throw new BadRequest("введен неверный пароль");
-    console.log("logging though Google");
+    // if (!validPassword) throw new BadRequest("Bad password");
+    console.log("User exist, logging though Google");
     if (!user.profileGoogle) user.profileGoogle = { name, avatar: picture };
     if (!user.passwordGoogle) user.passwordGoogle = bcrypt.hashSync(sub, 7);
     user.token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
