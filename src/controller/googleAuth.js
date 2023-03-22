@@ -12,6 +12,8 @@ module.exports.googleAuth = async (req, res) => {
         passwordGoogle: bcrypt.hashSync(sub, 7),
         email,
         emailConfirmed: false,
+        profile: {avatar: "", phone: ""},
+        password: "",
         profileGoogle: { name, avatar: picture }
       });
       await user.save();

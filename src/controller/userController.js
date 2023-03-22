@@ -18,9 +18,11 @@ module.exports.registration = async (req, res) => {
       throw new Conflict("пользователь с таким имейлом уже существует");
     } else { // Почта не подтверждена
       if (candidate.verificationCode) {// Если есть код, 
-        throw new Conflict("Имейл не подтверждён, проверьте почту");
-      } else { // делаем проверочный verificationCode и высылаем повторно
+        throw new BadRequest("Имейл не подтверждён, проверьте почту");
+      } else { // делаем проверочный verificationCode и высылаем на почту
         candidate.verificationCode = generateAccessToken(candidate._id);
+        candidate.password = bcrypt.hashSync(password, 7);
+        candidate.profile = {avatar:"", phoneNumber:"", position:""};
         await candidate.save();
         // send an email with emailConfirmation link ...
         return res.json({
@@ -31,9 +33,8 @@ module.exports.registration = async (req, res) => {
     }
   };
 
-  const hashPassword = bcrypt.hashSync(password, 7);
   const user = new UserModel({
-    password: hashPassword,
+    password: bcrypt.hashSync(password, 7),
     email,
     emailConfirmed: false,
     profile: {avatar:"", phoneNumber:"", position:""}
@@ -70,7 +71,7 @@ module.exports.login = async (req, res) => {
   if (!user) throw new NotFound("user not Found");
 
   if (!user.password) { // небыло регистрации через почту
-    throw new BadRequest("User wasn't registered by e-mail, try to enter by Google authorization");
+    throw new BadRequest("User wasn't registered by e-mail, try to use Google authorization");
   }
   const validPassword = bcrypt.compareSync(password, user.password);
   if (!validPassword) throw new BadRequest("Bad password");
