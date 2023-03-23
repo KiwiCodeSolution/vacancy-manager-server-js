@@ -22,7 +22,7 @@ module.exports.registration = async (req, res) => {
       } else { // делаем проверочный verificationCode и высылаем на почту
         candidate.verificationCode = generateAccessToken(candidate._id);
         candidate.password = bcrypt.hashSync(password, 7);
-        candidate.profile = {avatar:"", phoneNumber:"", position:""};
+        candidate.profile = {avatar:"", phoneNumber:"", position:"", lang: "eng", theme: "white"};
         await candidate.save();
         // send an email with emailConfirmation link ...
         return res.json({
@@ -80,7 +80,7 @@ module.exports.login = async (req, res) => {
 
   user.token = generateAccessToken(user._id);
   await user.save();
-  res.json({ user });
+  res.json({message: "login successfull", user });
 };
 
 module.exports.sendEmail = async () => {
@@ -90,7 +90,7 @@ module.exports.sendEmail = async () => {
 module.exports.logout = async (req, res) => {
   req.user.token = null;
   await req.user.save();
-  res.json({ message: `User ${req.user.email} logged out` });
+  res.json({ message: `User ${req.user.email} logged out successfull` });
 };
 
 module.exports.getUser = async (_req, res) => {
