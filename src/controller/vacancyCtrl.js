@@ -17,11 +17,11 @@ const create = async (req, res) => {
 };
 
 const update = async (req, res) => {
-    const { id, companyName, companyURL, source, sourceURL, position, salary, status, actions, notes, userRank, cardColor, archived } = req.body;
+    const { _id, companyName, companyURL, source, sourceURL, position, salary, status, actions, notes, userRank, cardColor, archived } = req.body;
     if (!companyName && !companyURL && !source && !sourceURL && !position && !salary && !status && !actions && !notes && !userRank && !cardColor && !archived) throw BadRequest("no fields to update");
     
-    const data = await VacancyModel.findOneAndUpdate({ _id: id, userId: req.user._id }, { companyName, companyURL, source, sourceURL, position, salary, status, actions, notes, userRank, cardColor, archived }, { new: true });
-    if (!data) throw NotFound (`A vacancy with id:${id} not found`);
+    const data = await VacancyModel.findOneAndUpdate({ _id, userId: req.user._id }, { companyName, companyURL, source, sourceURL, position, salary, status, actions, notes, userRank, cardColor, archived }, { new: true });
+    if (!data) throw NotFound (`A vacancy with id:${_id} not found`);
 
     res.json({
         message: "Vacancy updated successfully",
