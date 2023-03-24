@@ -38,7 +38,7 @@ const joiCreateVacancy = Joi.object({
 });
 
 const joiUpdateVacancy = Joi.object({
-  id: Joi.string().required(),
+  _id: Joi.string().required(),
   companyName: Joi.string().min(3).max(30),
   companyURL: Joi.string(), // validate for URL ?
   source: Joi.string().min(3).max(20),
