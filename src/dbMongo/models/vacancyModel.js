@@ -33,12 +33,7 @@ const joiCreateVacancy = Joi.object({
   salary: Joi.number().min(0).max(999999),
   currency: Joi.string().min(0).max(5),
   stage: Joi.string().allow("").max(20),
-  actions: Joi.array().items({
-    date: Joi.number(),
-    name: Joi.string().max(20),
-    deadline: Joi.number(),
-    fulfilled: Joi.boolean(),
-  }),
+  actions: Joi.array(),
   notes: Joi.array()
     .items({ date: Joi.number(), text: Joi.string().max(500) })
     .max(20),
