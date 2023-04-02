@@ -26,47 +26,49 @@ const VacancySchema = new Schema(
 
 const joiCreateVacancy = Joi.object({
   companyName: Joi.string().min(3).max(30).required(),
-  companyURL: Joi.string(), // validate for URL ?
-  source: Joi.string().max(20),
+  companyURL: Joi.string().allow(""), // validate for URL ?
+  source: Joi.string().allow("").max(20),
   sourceURL: Joi.string(),
-  position: Joi.string().min(3).max(30),
+  position: Joi.string().allow("").max(30),
   salary: Joi.number().min(0).max(999999),
   currency: Joi.string().max(5),
-  status: Joi.string().max(20),
+  status: Joi.string().allow("").max(20),
   actions: Joi.array().items({
     date: Joi.number(),
     name: Joi.string().max(20),
     deadline: Joi.number(),
+    fulfilled: Joi.boolean(),
   }),
   notes: Joi.array()
     .items({ date: Joi.number(), text: Joi.string().max(500) })
     .max(20),
   userRank: Joi.number().min(1).max(5),
   archived: Joi.boolean(),
-  cardColor: Joi.string(),
+  cardColor: Joi.string().allow(""),
 });
 
 const joiUpdateVacancy = Joi.object({
   _id: Joi.string().required(),
   companyName: Joi.string().min(3).max(30),
-  companyURL: Joi.string(), // validate for URL ?
-  source: Joi.string().min(3).max(20),
-  sourceURL: Joi.string(),
-  position: Joi.string().min(3).max(30),
+  companyURL: Joi.string().allow(""), // validate for URL ?
+  source: Joi.string().allow("").max(20),
+  sourceURL: Joi.string().allow(""),
+  position: Joi.string().allow("").max(30),
   salary: Joi.number().min(0).max(999999),
-  currency: Joi.string().max(5),
-  status: Joi.string().max(20),
+  currency: Joi.string().allow("").max(5),
+  status: Joi.string().allow("").max(20),
   actions: Joi.array().items({
     date: Joi.number(),
     name: Joi.string().max(20),
     deadline: Joi.number(),
+    fulfilled: Joi.boolean(),
   }),
   notes: Joi.array()
     .items({ date: Joi.number(), text: Joi.string().max(500) })
     .max(20),
   userRank: Joi.number().min(1).max(5),
   archived: Joi.boolean(),
-  cardColor: Joi.string(),
+  cardColor: Joi.string().allow(""),
 });
 
 const VacancyModel = model("Vacancies", VacancySchema);
