@@ -16,7 +16,7 @@ const create = async (req, res) => {
     salary,
     currency = "USD",
     notes,
-    status = "new",
+    stage = "new",
     userRank = 1,
     cardColor = "grey",
   } = req.body;
@@ -30,7 +30,7 @@ const create = async (req, res) => {
     salary,
     currency,
     notes,
-    status,
+    stage,
     userRank,
     cardColor,
     archived: false,
@@ -51,7 +51,7 @@ const update = async (req, res) => {
     sourceURL,
     position,
     salary,
-    status,
+    stage,
     actions,
     notes,
     userRank,
@@ -65,7 +65,7 @@ const update = async (req, res) => {
     !sourceURL &&
     !position &&
     !salary &&
-    !status &&
+    !stage &&
     !actions &&
     !notes &&
     !userRank &&
@@ -83,7 +83,7 @@ const update = async (req, res) => {
       sourceURL,
       position,
       salary,
-      status,
+      stage,
       actions,
       notes,
       userRank,

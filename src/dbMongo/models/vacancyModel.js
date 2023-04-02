@@ -11,7 +11,7 @@ const VacancySchema = new Schema(
     position: String,
     salary: Number,
     currency: String,
-    status: String,
+    stage: String,
     actions: [Object],
     notes: [Object],
     userRank: Number,
@@ -32,7 +32,7 @@ const joiCreateVacancy = Joi.object({
   position: Joi.string().allow("").max(30),
   salary: Joi.number().min(0).max(999999),
   currency: Joi.string().min(0).max(5),
-  status: Joi.string().allow("").max(20),
+  stage: Joi.string().allow("").max(20),
   actions: Joi.array().items({
     date: Joi.number(),
     name: Joi.string().max(20),
@@ -56,7 +56,7 @@ const joiUpdateVacancy = Joi.object({
   position: Joi.string().allow("").max(30),
   salary: Joi.number().min(0).max(999999),
   currency: Joi.string().min(0).max(5),
-  status: Joi.string().allow("").max(20),
+  stage: Joi.string().allow("").max(20),
   actions: Joi.array().items({
     date: Joi.number(),
     name: Joi.string().max(20),
