@@ -52,7 +52,7 @@ const update = async (req, res) => {
     position,
     salary,
     currency,
-    status,
+    stage,
     actions,
     notes,
     userRank,
@@ -67,7 +67,7 @@ const update = async (req, res) => {
     !position &&
     !salary &&
     !currency &&
-    !status &&
+    !stage &&
     !actions &&
     !notes &&
     !userRank &&
@@ -86,7 +86,7 @@ const update = async (req, res) => {
       position,
       salary,
       currency,
-      status,
+      stage,
       actions,
       notes,
       userRank,
