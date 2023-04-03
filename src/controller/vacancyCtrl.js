@@ -16,7 +16,7 @@ const create = async (req, res) => {
     salary,
     currency = "USD",
     notes,
-    status = "new",
+    stage = "new",
     userRank = 1,
     cardColor = "grey",
   } = req.body;
@@ -30,7 +30,7 @@ const create = async (req, res) => {
     salary,
     currency,
     notes,
-    status,
+    stage,
     userRank,
     cardColor,
     archived: false,
