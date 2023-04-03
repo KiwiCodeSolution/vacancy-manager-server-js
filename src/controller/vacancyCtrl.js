@@ -51,6 +51,7 @@ const update = async (req, res) => {
     sourceURL,
     position,
     salary,
+    currency,
     status,
     actions,
     notes,
@@ -65,6 +66,7 @@ const update = async (req, res) => {
     !sourceURL &&
     !position &&
     !salary &&
+    !currency &&
     !status &&
     !actions &&
     !notes &&
@@ -83,6 +85,7 @@ const update = async (req, res) => {
       sourceURL,
       position,
       salary,
+      currency,
       status,
       actions,
       notes,
