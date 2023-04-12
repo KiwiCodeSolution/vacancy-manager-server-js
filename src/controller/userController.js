@@ -24,7 +24,7 @@ module.exports.registration = async (req, res) => {
         candidate.password = bcrypt.hashSync(password, 7);
         candidate.profile = {avatar:"", phoneNumber:"", position:"", lang: "eng", theme: "white"};
         await candidate.save();
-        setTimeout(() => UserModel.findOneAndUpdate({ _id: candidate._id }, { verificationCode: "" }), 60000);
+        setTimeout(() => UserModel.findByIdAndUpdate(candidate._id, { verificationCode: "" }), 60000);
         // send an email with emailConfirmation link ...
 
         return res.json({
@@ -44,9 +44,9 @@ module.exports.registration = async (req, res) => {
   await user.save();
   user.verificationCode = generateAccessToken(user._id);
   await user.save();
-  setTimeout(() => UserModel.findOneAndUpdate({ _id: candidate._id }, { verificationCode: "" }), 60000);
+  setTimeout(() => UserModel.findByIdAndUpdate( candidate._id, { verificationCode: "" }), 60000);
   // send an email with emailConfirmation link ...
-  
+
   return res.json({
     message: `на почту ${user.email} выслано письмо с подтверждением`,
     verificationCode: user.verificationCode // УДАЛИТЬ, когда сделаем отправку письма
