@@ -36,6 +36,7 @@
     "joi": "^17.7.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.2",
+    "node-cron": "^3.0.2",
     "swagger-ui-express": "^4.6.0"
   },
   "husky": {
