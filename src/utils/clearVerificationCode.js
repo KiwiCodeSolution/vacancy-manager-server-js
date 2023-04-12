@@ -1,6 +1,7 @@
 const UserModel = require("../dbMongo/models/UserModel");
 
 const clearVerificationCode = async (id) => {
-  await UserModel.findOneAndUpdate({ _id: id }, { verificationCode: "" });
+  console.log("clear verify code from user id:", id);
+  UserModel.findByIdAndUpdate( id, { verificationCode: "" });
 };
 module.exports = clearVerificationCode;

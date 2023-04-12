@@ -4,6 +4,8 @@ const { BadRequest, NotFound, Conflict } = require("http-errors");
 const { validationResult } = require("express-validator");
 const { secret } = require("../config/config");
 const UserModel = require("../dbMongo/models/UserModel");
+// const { data } = require("../utils/temp");
+// const clearVerificationCode = require("../utils/clearVerificationCode");
 
 const generateAccessToken = id => jwt.sign({ id }, secret);
 
@@ -13,6 +15,7 @@ module.exports.registration = async (req, res) => {
 
   const { password, email } = req.body;
   const candidate = await UserModel.findOne({ email });
+
   if (candidate) {
     if (candidate.emailConfirmed) {
       throw new Conflict("пользователь с таким имейлом уже существует");
@@ -22,9 +25,13 @@ module.exports.registration = async (req, res) => {
       } else { // делаем проверочный verificationCode и высылаем на почту
         candidate.verificationCode = generateAccessToken(candidate._id);
         candidate.password = bcrypt.hashSync(password, 7);
-        candidate.profile = {avatar:"", phoneNumber:"", position:"", lang: "eng", theme: "white"};
+        candidate.profile = { avatar: "", phoneNumber: "", position: ""};
         await candidate.save();
-        setTimeout(() => UserModel.findByIdAndUpdate(candidate._id, { verificationCode: "" }), 60000);
+        setTimeout(() => {
+          candidate.verificationCode = "";
+          candidate.save();
+        }, 3600000);
+
         // send an email with emailConfirmation link ...
 
         return res.json({
@@ -44,7 +51,10 @@ module.exports.registration = async (req, res) => {
   await user.save();
   user.verificationCode = generateAccessToken(user._id);
   await user.save();
-  setTimeout(() => UserModel.findByIdAndUpdate( candidate._id, { verificationCode: "" }), 60000);
+    setTimeout(() => {
+      user.verificationCode = "";
+      user.save();
+    }, 3600000);
   // send an email with emailConfirmation link ...
 
   return res.json({
