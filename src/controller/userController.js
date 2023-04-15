@@ -4,6 +4,7 @@ const { BadRequest, NotFound, Conflict } = require("http-errors");
 const { validationResult } = require("express-validator");
 const { secret } = require("../config/config");
 const UserModel = require("../dbMongo/models/UserModel");
+const sendEmail = require("../mail/mailer");
 // const { data } = require("../utils/temp");
 // const clearVerificationCode = require("../utils/clearVerificationCode");
 
@@ -25,7 +26,7 @@ module.exports.registration = async (req, res) => {
       } else { // делаем проверочный verificationCode и высылаем на почту
         candidate.verificationCode = generateAccessToken(candidate._id);
         candidate.password = bcrypt.hashSync(password, 7);
-        candidate.profile = { avatar: "", phoneNumber: "", position: ""};
+        candidate.profile = { avatar: "", phoneNumber: "", position: "" };
         await candidate.save();
         setTimeout(() => {
           candidate.verificationCode = "";
@@ -46,17 +47,22 @@ module.exports.registration = async (req, res) => {
     password: bcrypt.hashSync(password, 7),
     email,
     emailConfirmed: false,
-    profile: {avatar:"", phoneNumber:"", position:""}
+    profile: { avatar: "", phoneNumber: "", position: "" }
   });
   await user.save();
   user.verificationCode = generateAccessToken(user._id);
   await user.save();
-    setTimeout(() => {
-      user.verificationCode = "";
-      user.save();
-    }, 3600000);
+  setTimeout(() => {
+    user.verificationCode = "";
+    user.save();
+  }, 3600000);
+  const letterSubject = " Mail confirmation";
   // send an email with emailConfirmation link ...
-
+  sendEmail(
+    email,
+    `" Hello, follow the link to confirm your email  http://kiwicode.tech/confirmEmail?verificationCode=${user.verificationCode} " `,
+    letterSubject
+  );
   return res.json({
     message: `на почту ${user.email} выслано письмо с подтверждением`,
     verificationCode: user.verificationCode // УДАЛИТЬ, когда сделаем отправку письма
@@ -67,7 +73,7 @@ module.exports.emailVerification = async (req, res) => {
   const { verificationCode } = req.query;
   if (!verificationCode) throw new BadRequest();
 
-  const user = await UserModel.findOne({verificationCode});
+  const user = await UserModel.findOne({ verificationCode });
   if (!user) throw new NotFound("user not Found");
   user.emailConfirmed = true;
   user.verificationCode = "";
@@ -75,7 +81,7 @@ module.exports.emailVerification = async (req, res) => {
   user.save();
   res.json({
     message: "e-mail confirmed successfully",
-    user: {email: user.email, profile: user.profile, token: user.token}
+    user: { email: user.email, profile: user.profile, token: user.token }
   });
 };
 
@@ -94,11 +100,11 @@ module.exports.login = async (req, res) => {
 
   user.token = generateAccessToken(user._id);
   await user.save();
-  res.json({message: "login successfull", user });
+  res.json({ message: "login successfull", user });
 };
 
 module.exports.sendEmail = async () => {
-// найди юзера, внести его новый пароль в БД, отправь имейл с токеном
+  // найди юзера, внести его новый пароль в БД, отправь имейл с токеном
 };
 
 module.exports.logout = async (req, res) => {
@@ -115,6 +121,6 @@ module.exports.getUser = async (_req, res) => {
 module.exports.getCurrent = async (req, res) => {
   const { email, token, profile } = req.user;
   const { currProfile } = req.query;
-  if(currProfile === "google") return res.json({ email, token, profile: {...profile, ...req.user.profileGoogle} }); 
+  if (currProfile === "google") return res.json({ email, token, profile: { ...profile, ...req.user.profileGoogle } });
   res.json({ email, token, profile });
 };
