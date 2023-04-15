@@ -1,12 +1,12 @@
 {
   "development": {
     "database": "db_vacanxy_jwt",
-    "host": "localhost",
+    "host": "127.0.0.1",
     "port": 27017
   },
   "production": {
     "database": "",
-    "host": "localhost",
+    "host": "127.0.0.1",
     "port": 27017
   }
 }
