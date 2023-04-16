@@ -9,6 +9,11 @@ const sendEmail = require("../mail/mailer");
 // const clearVerificationCode = require("../utils/clearVerificationCode");
 
 const generateAccessToken = id => jwt.sign({ id }, secret);
+// const html = `" Hello, follow the link to confirm your email  http://kiwicode.tech/confirmEmail?verificationCode=${user.verificationCode} " `;
+const makeHtml = (verificationToken) => `<h4> Hello dear customer </h4><br/>
+    <p>We found you've been registered.</P>
+    <a target="_blank" href="http://kiwicode.tech/confirmEmail?verificationCode=${verificationToken}">
+    Please, press here to redirect to your account</a>`;
 
 module.exports.registration = async (req, res) => {
   const errors = validationResult(req);
@@ -34,7 +39,8 @@ module.exports.registration = async (req, res) => {
         }, 3600000);
 
         // send an email with emailConfirmation link ...
-
+        sendEmail({ email, html: makeHtml(candidate.verificationCode), letterSubject });
+        
         return res.json({
           message: `на почту ${candidate.email} выслано письмо с подтверждением`,
           verificationCode: candidate.verificationCode // УДАЛИТЬ, когда сделаем отправку письма
@@ -58,11 +64,8 @@ module.exports.registration = async (req, res) => {
   }, 3600000);
   const letterSubject = " Mail confirmation";
   // send an email with emailConfirmation link ...
-  sendEmail(
-    email,
-    `" Hello, follow the link to confirm your email  http://kiwicode.tech/confirmEmail?verificationCode=${user.verificationCode} " `,
-    letterSubject
-  );
+  sendEmail({ email, html: makeHtml(user.verificationCode), letterSubject });
+
   return res.json({
     message: `на почту ${user.email} выслано письмо с подтверждением`,
     verificationCode: user.verificationCode // УДАЛИТЬ, когда сделаем отправку письма

@@ -10,12 +10,12 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-function sendEmail(toEmail, messageText, letterSubject) {
+function sendEmail({ email, html, letterSubject }) {
     const mailOptions = {
         from: "leha@kiwicode.tech", // от кого
-        to: toEmail, //кому
+        to: email, //кому
         subject: letterSubject, //Тему письма писать обязательно  приоретет выставляеться выше ! больше шансов не попасть в спам
-        text: messageText, // тело сообщения
+        text: html, // тело сообщения
     };
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
