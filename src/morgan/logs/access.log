@@ -1,0 +1,15 @@
+::1 - - [16/Apr/2023:10:28:53 +0000] "GET /ffbdfb HTTP/1.1" 404 29 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [16/Apr/2023:10:35:40 +0000] "GET /gj HTTP/1.1" 404 29 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+::1 - - [16/Apr/2023:10:35:54 +0000] "GET /hhhh HTTP/1.1" 404 29 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+2023-04-16 13:37:57 ::1 GET /hhhh 404 29 - 7.072 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 13:38:45 ::1 GET /dgdg 404 29 - 0.543 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 13:39:06 ::1 GET /qwert 404 29 - 0.298 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 14:03:06 ::1 GET /api-docs/ 304 undefined - 5.191 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 14:03:06 ::1 GET /api-docs/swagger-ui.css 304 undefined - 2.057 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 14:03:06 ::1 GET /api-docs/swagger-ui-init.js 304 undefined - 0.456 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 14:03:06 ::1 GET /api-docs/swagger-ui-standalone-preset.js 304 undefined - 1.345 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 14:03:06 ::1 GET /api-docs/swagger-ui-bundle.js 200 1061579 - 6.579 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 14:30:17 ::1 GET /hhhh 404 29 - 1.119 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 20:30:46 ::1 GET /auth/current?currProfile= 401 44 - 3.072 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 20:30:46 ::1 GET /auth/current?currProfile= 401 44 - 0.734 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
+2023-04-16 20:31:08 ::1 POST /auth/login 404 28 - 8.417 ms Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36
