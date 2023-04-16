@@ -20,12 +20,14 @@ module.exports.registration = async (req, res) => {
   if (!errors.isEmpty()) throw new BadRequest("ошибка при валидации");
 
   const { password, email } = req.body;
+  const letterSubject = "\"Vacancy Manager App\" Mail confirmation";
   const candidate = await UserModel.findOne({ email });
 
   if (candidate) {
     if (candidate.emailConfirmed) {
       throw new Conflict("пользователь с таким имейлом уже существует");
     } else { // Почта не подтверждена
+      console.log("verificationCode:", candidate.verificationCode);
       if (candidate.verificationCode) {// Если есть код, 
         throw new BadRequest("Имейл не подтверждён, проверьте почту");
       } else { // делаем проверочный verificationCode и высылаем на почту
@@ -62,7 +64,7 @@ module.exports.registration = async (req, res) => {
     user.verificationCode = "";
     user.save();
   }, 3600000);
-  const letterSubject = " Mail confirmation";
+
   // send an email with emailConfirmation link ...
   sendEmail({ email, html: makeHtml(user.verificationCode), letterSubject });
 
