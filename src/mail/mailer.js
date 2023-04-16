@@ -15,7 +15,7 @@ function sendEmail({ email, html, letterSubject }) {
         from: "leha@kiwicode.tech", // от кого
         to: email, //кому
         subject: letterSubject, //Тему письма писать обязательно  приоретет выставляеться выше ! больше шансов не попасть в спам
-        text: html, // тело сообщения
+        html, // тело сообщения
     };
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
