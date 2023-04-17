@@ -7,7 +7,8 @@ const User = new Schema({
 	token: String,
 	verificationCode: String,
 	profile: Object,
-	profileGoogle: Object
+	profileGoogle: Object,
+	settings: Object
 },
 {
 	versionKey: false,
