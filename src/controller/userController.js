@@ -145,5 +145,9 @@ module.exports.passRestore = async ({ email }, res) => {
 };
 
 module.exports.passCodeVerify = async (req, res) => {
-  res.json({ message: "pass code cerify" });
+  res.json({ message: "pass code verify" });
+};
+
+module.exports.changePass = async (req, res) => {
+  res.json({ message: "change pass successfull" });
 };

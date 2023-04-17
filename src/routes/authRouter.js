@@ -10,12 +10,12 @@ const ctrlWrapper = require("../middlewares/ctrlWrapper");
 router.post("/register", [
     // check("username", "username is required").notEmpty(),
     check("password", "from 8 to 32 symbols").isLength({ min: 8, max: 32 })
-
 ], ctrlWrapper(controller.registration));
 router.get("/emailVerify", ctrlWrapper(controller.emailVerification));
 router.post("/login", ctrlWrapper(controller.login));
 router.post("/passRestore", ctrlWrapper(controller.passRestore));
-router.get("passCodeVerify", ctrlWrapper(controller.passCodeVerify));
+router.get("/passCodeVerify", ctrlWrapper(controller.passCodeVerify));
+router.post("/changePass", ctrlWrapper(controller.changePass));
 
 router.post("/googleAuth", ctrlWrapper(googleAuth));
 
