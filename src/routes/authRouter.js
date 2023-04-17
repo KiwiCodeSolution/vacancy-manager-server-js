@@ -14,6 +14,8 @@ router.post("/register", [
 ], ctrlWrapper(controller.registration));
 router.get("/emailVerify", ctrlWrapper(controller.emailVerification));
 router.post("/login", ctrlWrapper(controller.login));
+router.post("/passRestore", ctrlWrapper(controller.passRestore));
+router.get("passCodeVerify", ctrlWrapper(controller.passCodeVerify));
 
 router.post("/googleAuth", ctrlWrapper(googleAuth));
 

@@ -15,6 +15,11 @@ const makeHtml = (verificationToken) => `<h4> Hello dear customer </h4><br/>
     <a target="_blank" href="http://kiwicode.tech/confirmEmail?verificationCode=${verificationToken}">
     Please, press here to confirm your email account</a>`;
 
+const makeHtmlPassRestore = (verificationToken) => `<h4> Hello dear customer </h4><br/>
+    <p>We are ready to change your password in Vacancy Manager app.</P>
+    <a target="_blank" href="http://kiwicode.tech/passCodeVerify?PassRestoreCode=${verificationToken}">
+    Please, press here to continue</a>`;
+
 module.exports.registration = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) throw new BadRequest("ошибка при валидации");
@@ -27,7 +32,7 @@ module.exports.registration = async (req, res) => {
     if (candidate.emailConfirmed) {
       throw new Conflict("пользователь с таким имейлом уже существует");
     } else { // Почта не подтверждена
-      console.log("verificationCode:", candidate.verificationCode);
+      // console.log("verificationCode:", candidate.verificationCode);
       if (candidate.verificationCode) {// Если есть код, 
         throw new BadRequest("Имейл не подтверждён, проверьте почту");
       } else { // делаем проверочный verificationCode и высылаем на почту
@@ -40,7 +45,6 @@ module.exports.registration = async (req, res) => {
           candidate.save();
         }, 3600000);
 
-        // send an email with emailConfirmation link ...
         sendEmail({ email, html: makeHtml(candidate.verificationCode), letterSubject });
         
         return res.json({
@@ -65,12 +69,10 @@ module.exports.registration = async (req, res) => {
     user.save();
   }, 3600000);
 
-  // send an email with emailConfirmation link ...
   sendEmail({ email, html: makeHtml(user.verificationCode), letterSubject });
 
   return res.json({
     message: `на почту ${user.email} выслано письмо с подтверждением`,
-    verificationCode: user.verificationCode // УДАЛИТЬ, когда сделаем отправку письма
   });
 };
 
@@ -108,10 +110,6 @@ module.exports.login = async (req, res) => {
   res.json({ message: "login successfull", user });
 };
 
-module.exports.sendEmail = async () => {
-  // найди юзера, внести его новый пароль в БД, отправь имейл с токеном
-};
-
 module.exports.logout = async (req, res) => {
   req.user.token = null;
   await req.user.save();
@@ -128,4 +126,24 @@ module.exports.getCurrent = async (req, res) => {
   const { currProfile } = req.query;
   if (currProfile === "google") return res.json({ email, token, profile: { ...profile, ...req.user.profileGoogle } });
   res.json({ email, token, profile });
+};
+
+module.exports.passRestore = async ({ email }, res) => {
+  if (!email) throw new BadRequest("email required !");
+  const user = await UserModel.findOne({ email });
+
+  if (!user) throw new NotFound("user not found");
+  if (!user.emailConfirmed) throw new BadRequest("Email doesn't confirmed. Имейл не подтверждён, проверьте почту");
+  user.verificationCode = generateAccessToken(user._id);
+  user.save();
+  sendEmail({
+    email,
+    html: makeHtmlPassRestore(user.verificationCode),
+    letterSubject: "\"Vacancy Manager App\" Password Restoration"
+  });
+  res.json({ message: `на почту ${email} выслано письмо с инструкцией` });
+};
+
+module.exports.passCodeVerify = async (req, res) => {
+  res.json({ message: "pass code cerify" });
 };
