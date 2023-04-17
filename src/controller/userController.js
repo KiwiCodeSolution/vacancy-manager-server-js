@@ -87,9 +87,10 @@ module.exports.emailVerification = async (req, res) => {
   user.verificationCode = "";
   user.token = generateAccessToken(user._id);
   user.save();
+  const { email, token, profile, settings } = user;
   res.json({
     message: "e-mail confirmed successfully",
-    user: { email: user.email, profile: user.profile, token: user.token }
+    user: { email, token, profile, settings }
   });
 };
 
@@ -108,7 +109,12 @@ module.exports.login = async (req, res) => {
 
   user.token = generateAccessToken(user._id);
   await user.save();
-  res.json({ message: "login successfull", user });
+
+  const { token, profile, settings } = user;
+  res.json({
+    message: "login successfull",
+    user: { email, token, profile, settings }
+  });
 };
 
 module.exports.logout = async (req, res) => {
@@ -123,13 +129,14 @@ module.exports.getUser = async (_req, res) => {
 };
 
 module.exports.getCurrent = async (req, res) => {
-  const { email, token, profile } = req.user;
+  const { email, token, profile, settings } = req.user;
   const { currProfile } = req.query;
-  if (currProfile === "google") return res.json({ email, token, profile: { ...profile, ...req.user.profileGoogle } });
-  res.json({ email, token, profile });
+  if (currProfile === "google") return res.json({ email, token, profile: { ...profile, ...req.user.profileGoogle }, settings });
+  res.json({ email, token, profile, settings });
 };
 
-module.exports.passRestore = async ({ email }, res) => {
+module.exports.passRestore = async (req, res) => {
+  const { email } = req.body;
   if (!email) throw new BadRequest("email required !");
   const user = await UserModel.findOne({ email });
 
@@ -146,7 +153,16 @@ module.exports.passRestore = async ({ email }, res) => {
 };
 
 module.exports.passCodeVerify = async (req, res) => {
-  res.json({ message: "pass code verify" });
+  const { verificationCode } = req.body;
+  if (!verificationCode) throw new BadRequest("verificationCode required");
+
+  const user = UserModel.findOne({ verificationCode });
+  if (!user) throw new NotFound("No user with that verificationCode");
+  user.verificationCode = "";
+  user.token = generateAccessToken(user._id);
+  user.save();
+  const { email, token, profile, settings } = user;
+  res.json({ message: "pass code verified", user: { email, token, profile, settings } });
 };
 
 module.exports.changePass = async (req, res) => {

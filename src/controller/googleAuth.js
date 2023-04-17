@@ -12,7 +12,8 @@ module.exports.googleAuth = async (req, res) => {
         passwordGoogle: bcrypt.hashSync(sub, 7),
         email,
         emailConfirmed: false,
-        profile: {avatar: "", phone: ""},
+        profile: { avatar: "", phoneNumber: "", position: "" },
+        settings: { lang: "eng", notification: false, theme: "white", localCurrency: "" },
         password: "",
         profileGoogle: { name, avatar: picture }
       });
@@ -28,5 +29,10 @@ module.exports.googleAuth = async (req, res) => {
     if (!user.passwordGoogle) user.passwordGoogle = bcrypt.hashSync(sub, 7);
     user.token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
     await user.save();
-    res.json({ email, profile: {...user.profile, name, avatar: picture }, token: user.token });
+  res.json({
+    email,
+    profile: { ...user.profile, name, avatar: picture },
+    token: user.token,
+    settings: user.settings,
+  });
 };
