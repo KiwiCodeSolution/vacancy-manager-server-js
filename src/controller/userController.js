@@ -32,13 +32,13 @@ module.exports.registration = async (req, res) => {
     if (candidate.emailConfirmed) {
       throw new Conflict("пользователь с таким имейлом уже существует");
     } else { // Почта не подтверждена
-      // console.log("verificationCode:", candidate.verificationCode);
       if (candidate.verificationCode) {// Если есть код, 
         throw new BadRequest("Имейл не подтверждён, проверьте почту");
       } else { // делаем проверочный verificationCode и высылаем на почту
         candidate.verificationCode = generateAccessToken(candidate._id);
         candidate.password = bcrypt.hashSync(password, 7);
         candidate.profile = { avatar: "", phoneNumber: "", position: "" };
+        candidate.settings = { lang: "eng", notification: false, theme: "white", localCurrency: "" };
         await candidate.save();
         setTimeout(() => {
           candidate.verificationCode = "";
@@ -59,7 +59,8 @@ module.exports.registration = async (req, res) => {
     password: bcrypt.hashSync(password, 7),
     email,
     emailConfirmed: false,
-    profile: { avatar: "", phoneNumber: "", position: "" }
+    profile: { avatar: "", phoneNumber: "", position: "" },
+    settings: { lang: "eng", notification: false, theme: "white", localCurrency: "" },
   });
   await user.save();
   user.verificationCode = generateAccessToken(user._id);
