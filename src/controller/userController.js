@@ -166,5 +166,10 @@ module.exports.passCodeVerify = async (req, res) => {
 };
 
 module.exports.changePass = async (req, res) => {
-  res.json({ message: "change pass successfull" });
+  const { password } = req.body;
+  if (!password) throw new BadRequest("password required");
+  // validate password
+  req.user.password = bcrypt.hashSync(password, 7);
+  req.user.save();
+  res.json({ message: "password changed successfully" });
 };
