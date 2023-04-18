@@ -28,7 +28,7 @@ const joiCreateVacancy = Joi.object({
   companyName: Joi.string().min(3).max(30).required(),
   companyURL: Joi.string().allow(""), // validate for URL ?
   source: Joi.string().allow("").max(20),
-  sourceURL: Joi.string(),
+  sourceURL: Joi.string().allow(""),
   position: Joi.string().allow("").max(30),
   salary: Joi.number().min(0).max(999999),
   currency: Joi.string().min(0).max(5),
