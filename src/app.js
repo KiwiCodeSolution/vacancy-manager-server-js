@@ -4,6 +4,7 @@ const mainRouter = require("./routes/mainRouter");
 const vacancyRouter = require("./routes/vacancies");
 const authRouter = require("./routes/authRouter");
 const profileRouter = require("./routes/profileRouter");
+const settingsRouter = require("./routes/settingsRouter");
 const requestLogger = require("./morgan/morgan");
 
 const app = express();
@@ -15,6 +16,7 @@ app.use("/", mainRouter);
 app.use("/auth", authRouter);
 app.use("/vacancy", vacancyRouter);
 app.use("/profile", profileRouter);
+app.use("/settings", settingsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
