@@ -13,13 +13,14 @@ const create = async (req, res) => {
     source,
     sourceURL,
     position = "",
-    salary,
+    salaryMin,
+    salaryMax,
     currency = "USD",
     notes,
-    stage = "new",
     userRank = 1,
     cardColor = "grey",
   } = req.body;
+  const date = Date.now();
   const data = await VacancyModel.create({
     userId: req.user._id,
     companyName,
@@ -27,13 +28,19 @@ const create = async (req, res) => {
     source,
     sourceURL,
     position,
-    salary,
+    salaryMin,
+    salaryMax,
     currency,
     notes,
-    stage,
     userRank,
     cardColor,
     archived: false,
+    actions: [{
+      date,
+      name: "Vacancy created",
+      deadline: date,
+      fulfilled: true
+    }]
   });
 
   res.json({
@@ -50,9 +57,9 @@ const update = async (req, res) => {
     source,
     sourceURL,
     position,
-    salary,
+    salaryMin,
+    salaryMax,
     currency,
-    stage,
     actions,
     notes,
     userRank,
@@ -65,9 +72,9 @@ const update = async (req, res) => {
     !source &&
     !sourceURL &&
     !position &&
-    !salary &&
+    !salaryMin &&
+    !salaryMax &&
     !currency &&
-    !stage &&
     !actions &&
     !notes &&
     !userRank &&
@@ -84,9 +91,9 @@ const update = async (req, res) => {
       source,
       sourceURL,
       position,
-      salary,
+      salaryMin,
+      salaryMax,
       currency,
-      stage,
       actions,
       notes,
       userRank,
