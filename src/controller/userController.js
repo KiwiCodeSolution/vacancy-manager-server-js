@@ -5,16 +5,12 @@ const { validationResult } = require("express-validator");
 const { secret } = require("../config/config");
 const UserModel = require("../dbMongo/models/UserModel");
 const sendEmail = require("../mail/mailer");
-// const { data } = require("../utils/temp");
-// const clearVerificationCode = require("../utils/clearVerificationCode");
 
 const generateAccessToken = id => jwt.sign({ id }, secret);
-// const html = `" Hello, follow the link to confirm your email  http://kiwicode.tech/confirmEmail?verificationCode=${user.verificationCode} " `;
 const makeHtml = (verificationToken) => `<h4> Hello dear customer </h4><br/>
     <p>We found you've been registered to Vacancy Manager app.</P>
     <a target="_blank" href="http://kiwicode.tech:3000/confirmEmail?verificationCode=${verificationToken}">
     Please, press here to confirm your email account</a>`;
-
 const makeHtmlPassRestore = (verificationToken) => `<h4> Hello dear customer </h4><br/>
     <p>We are ready to change your password in Vacancy Manager app.</P>
     <a target="_blank" href="http://kiwicode.tech:3000/passCodeVerify?PassRestoreCode=${verificationToken}">
@@ -38,7 +34,7 @@ module.exports.registration = async (req, res) => {
         candidate.verificationCode = generateAccessToken(candidate._id);
         candidate.password = bcrypt.hashSync(password, 7);
         candidate.profile = { avatar: "", phoneNumber: "", position: "" };
-        candidate.settings = { lang: "eng", notification: false, theme: "white", localCurrency: "" };
+        candidate.settings = { lang: "eng", notification: false, theme: "white" };
         await candidate.save();
         setTimeout(() => {
           candidate.verificationCode = "";
@@ -60,7 +56,7 @@ module.exports.registration = async (req, res) => {
     email,
     emailConfirmed: false,
     profile: { avatar: "", phoneNumber: "", position: "" },
-    settings: { lang: "eng", notification: false, theme: "white", localCurrency: "" },
+    settings: { lang: "eng", notification: false, theme: "white" },
   });
   await user.save();
   user.verificationCode = generateAccessToken(user._id);
