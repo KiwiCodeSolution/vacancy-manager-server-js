@@ -11,6 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
+app.use(express.urlencoded({ limit: "100Kb", extended: "true" }));
 
 app.use("/", mainRouter);
 app.use("/auth", authRouter);
