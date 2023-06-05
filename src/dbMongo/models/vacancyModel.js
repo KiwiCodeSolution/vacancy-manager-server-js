@@ -28,7 +28,7 @@ const joiCreateVacancy = Joi.object({
   source: Joi.string().allow("").max(20),
   sourceURL: Joi.string().allow(""),
   position: Joi.string().allow("").max(30),
-  salary: Joi.string().allow("").max(10),
+  salary: Joi.string().allow("").max(15),
   actions: Joi.array().items({
     date: Joi.number(),
     name: Joi.string().max(40),
@@ -48,7 +48,7 @@ const joiUpdateVacancy = Joi.object({
   source: Joi.string().allow("").max(20),
   sourceURL: Joi.string().allow(""),
   position: Joi.string().allow("").max(30),
-  salary: Joi.string().allow("").max(10),
+  salary: Joi.string().allow("").max(15),
   actions: Joi.array().items({
     date: Joi.number(),
     name: Joi.string().max(40),
