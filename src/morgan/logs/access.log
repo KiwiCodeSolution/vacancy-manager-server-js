@@ -92,3 +92,19 @@
 2023-05-04 17:32:50 ::ffff:127.0.0.1 GET /auth/current?currProfile= 200 644 - 57.703 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0
 2023-05-04 17:32:50 ::ffff:127.0.0.1 POST /settings 200 113 - 124.530 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0
 2023-05-04 17:32:50 ::ffff:127.0.0.1 GET /auth/current?currProfile= 200 644 - 61.351 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0
+2023-06-10 14:13:50 ::ffff:127.0.0.1 GET /auth/current?currProfile=google 200 655 - 81.699 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:13:50 ::ffff:127.0.0.1 GET /auth/current?currProfile=google 200 655 - 82.271 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:14:30 ::ffff:127.0.0.1 GET /auth/logout 200 59 - 153.405 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:14:30 ::ffff:127.0.0.1 GET /auth/current?currProfile= 401 44 - 2.255 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:15:25 ::ffff:127.0.0.1 POST /auth/register 400 83 - 78.096 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:16:05 ::ffff:127.0.0.1 POST /auth/register 200 107 - 287.002 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:21:52 ::ffff:127.0.0.1 POST /auth/register 200 107 - 298.783 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:40:17 ::ffff:127.0.0.1 POST /auth/register 200 107 - 330.150 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:49:05 ::ffff:127.0.0.1 POST /auth/register 200 107 - 277.914 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:53:18 ::ffff:127.0.0.1 POST /auth/register 200 107 - 274.332 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:58:42 ::ffff:127.0.0.1 POST /auth/register 200 107 - 283.476 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0
+2023-06-10 14:59:08 ::1 GET /auth/current?currProfile= 401 44 - 1.537 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 OPR/99.0.0.0
+2023-06-10 14:59:08 ::1 GET /auth/current?currProfile= 401 44 - 0.920 ms Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 OPR/99.0.0.0
+2023-06-10 14:59:11 ::1 GET /auth/emailVerify?verificationCode=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODQ2NTcxODQyNGZiYTgyOGZhMTdkYiIsImlhdCI6MTY4NjM5ODMyMX0.I6fYt-uW4IcsKahYJkhz5FMe9visxwKif4WBA_geULE 200 357 - 61.217 ms Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Mobile Safari/537.36
+2023-06-10 14:59:11 ::1 GET /auth/emailVerify?verificationCode=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODQ2NTcxODQyNGZiYTgyOGZhMTdkYiIsImlhdCI6MTY4NjM5ODMyMX0.I6fYt-uW4IcsKahYJkhz5FMe9visxwKif4WBA_geULE 304 undefined - 62.737 ms Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Mobile Safari/537.36
+2023-06-10 14:59:11 ::1 GET /auth/current?currProfile= 200 306 - 375.221 ms Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Mobile Safari/537.36

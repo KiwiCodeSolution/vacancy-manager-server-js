@@ -1,11 +1,14 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 const { MAIL_HOST, MAIL_FROM, MAIL_PASS } = process.env;
-
+console.log("Mail-from:", MAIL_FROM);
+console.log("Mail-pass:", MAIL_PASS)
 const transporter = nodemailer.createTransport({
-    host: MAIL_HOST, //не трогать
-    port: 465, //не трогать
-    secure: true,
+    // host: MAIL_HOST, //не трогать
+    // port: 465, //не трогать
+    // secure: true,
+    service: "gmail",
+    
     auth: {
         user: MAIL_FROM, // почта юзера или сервиса на кивикоде
         pass: MAIL_PASS, // замените на пароль от учетной записи
