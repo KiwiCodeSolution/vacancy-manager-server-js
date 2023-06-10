@@ -8,8 +8,8 @@ const sendEmail = require("../mail/mailer");
 
 const generateAccessToken = id => jwt.sign({ id }, secret);
 
-// const baseURL = "http://kiwicode.tech:3000/";
-const baseClientURL = "vacman.netlify.app/";
+const baseClientURL = "http://kiwicode.tech:3000/";
+// const baseClientURL = "vacman.netlify.app/";
 
 const makeHtml = (verificationToken) => `<h4> Hello dear customer </h4><br/>
     <p>We found you've been registered to Vacancy Manager app.</P>
