@@ -7,13 +7,17 @@ const UserModel = require("../dbMongo/models/UserModel");
 const sendEmail = require("../mail/mailer");
 
 const generateAccessToken = id => jwt.sign({ id }, secret);
+
+// const baseURL = "http://kiwicode.tech:3000/";
+const baseClientURL = "vacman.netlify.app/";
+
 const makeHtml = (verificationToken) => `<h4> Hello dear customer </h4><br/>
     <p>We found you've been registered to Vacancy Manager app.</P>
-    <a target="_blank" href="http://kiwicode.tech:3000/confirmEmail?verificationCode=${verificationToken}">
+    <a target="_blank" href="${baseClientURL}confirmEmail?verificationCode=${verificationToken}">
     Please, press here to confirm your email account</a>`;
 const makeHtmlPassRestore = (verificationToken) => `<h4> Hello dear customer </h4><br/>
     <p>We are ready to change your password in Vacancy Manager app.</P>
-    <a target="_blank" href="http://kiwicode.tech:3000/passCodeVerify?PassRestoreCode=${verificationToken}">
+    <a target="_blank" href="${baseClientURL}passCodeVerify?PassRestoreCode=${verificationToken}">
     Please, press here to continue</a>`;
 
 module.exports.registration = async (req, res) => {
