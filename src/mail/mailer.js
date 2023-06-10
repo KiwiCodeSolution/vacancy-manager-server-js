@@ -1,8 +1,6 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 const { MAIL_FROM, MAIL_PASS } = process.env;
-console.log("Mail-from:", MAIL_FROM);
-console.log("Mail-pass:", MAIL_PASS);
 
 const transporter = nodemailer.createTransport({
     // host: "mail.kiwicode.tech", //не трогать
