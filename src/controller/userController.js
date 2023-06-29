@@ -7,6 +7,8 @@ const UserModel = require("../dbMongo/models/UserModel");
 const sendEmail = require("../mail/mailer");
 
 const generateAccessToken = id => jwt.sign({ id }, secret);
+const initialProfile = { avatar: "", phoneNumber: "", position: "", location: "", Insagram: "", facebook: "", linkedIn: "", telegram: "" };
+const initialSettings = { lang: "eng", notification: false, theme: "white" };
 
 // const baseClientURL = "http://kiwicode.tech:3000/";
 const baseClientURL = "https://vacman.netlify.app/";
@@ -37,8 +39,8 @@ module.exports.registration = async (req, res) => {
       } else { // делаем проверочный verificationCode и высылаем на почту
         candidate.verificationCode = generateAccessToken(candidate._id);
         candidate.password = bcrypt.hashSync(password, 7);
-        candidate.profile = { avatar: "", phoneNumber: "", position: "" };
-        candidate.settings = { lang: "eng", notification: false, theme: "white" };
+        candidate.profile = { ...initialProfile };
+        candidate.settings = { ...initialSettings };
         await candidate.save();
         setTimeout(() => {
           candidate.verificationCode = "";
@@ -59,8 +61,8 @@ module.exports.registration = async (req, res) => {
     password: bcrypt.hashSync(password, 7),
     email,
     emailConfirmed: false,
-    profile: { avatar: "", phoneNumber: "", position: "" },
-    settings: { lang: "eng", notification: false, theme: "white" },
+    profile: { ...initialProfile},
+    settings: { ...initialSettings },
   });
   await user.save();
   user.verificationCode = generateAccessToken(user._id);
@@ -149,7 +151,7 @@ module.exports.passRestore = async (req, res) => {
     html: makeHtmlPassRestore(user.verificationCode),
     letterSubject: "\"Vacancy Manager App\" Password Restoration"
   });
-  res.json({ message: `на почту ${email} выслано письмо с инструкцией` });
+  res.json({ message: `We send an email with instructions to ${email}` });
 };
 
 module.exports.passCodeVerify = async (req, res) => {
