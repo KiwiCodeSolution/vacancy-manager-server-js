@@ -17,15 +17,16 @@ module.exports.update = async (req, res) => {
 
 module.exports.uploadAvatar = async (req, res) => {
   const file = req.body.data;
-  const { CLOUD_NAME, CLOUD_APIKEY, CLOUD_APISECRET} = process.env;
+  const { CLOUD_NAME, CLOUD_APIKEY, CLOUD_APISECRET } = process.env;
 
   cloudinary.config({
-    cloud_name:CLOUD_NAME,
-    api_key:CLOUD_APIKEY,
-    api_secret:CLOUD_APISECRET
+    cloud_name: CLOUD_NAME,
+    api_key: CLOUD_APIKEY,
+    api_secret: CLOUD_APISECRET
   });
 
-  const uploadedResponse = await cloudinary.uploader.upload(file, {folder: "Avatars"});
-  req.body = {avatar: uploadedResponse.url};
+  const uploadedResponse = await cloudinary.uploader.upload(file, { folder: "Avatars" });
+  const { profile } = req.user;
+  req.body = { ...profile, avatar: uploadedResponse.url };
   this.update(req, res);
 };
