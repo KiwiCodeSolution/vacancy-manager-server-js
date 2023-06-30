@@ -7,7 +7,7 @@ const UserModel = require("../dbMongo/models/UserModel");
 const sendEmail = require("../mail/mailer");
 
 const generateAccessToken = id => jwt.sign({ id }, secret);
-const initialProfile = { avatar: "", phoneNumber: "", position: "", location: "", Insagram: "", facebook: "", linkedIn: "", telegram: "" };
+const initialProfile = { avatar: "", phoneNumber: "", position: "", location: "", Instagram: "", facebook: "", linkedin: "", telegram: "" };
 const initialSettings = { lang: "eng", notification: false, theme: "white" };
 
 // const baseClientURL = "http://kiwicode.tech:3000/";
