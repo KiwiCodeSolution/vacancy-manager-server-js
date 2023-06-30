@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { BadRequest } = require("http-errors");
 const UserModel = require("../dbMongo/models/UserModel");
+const { initialProfile, initialSettings } = require("../config/initialsData");
 
 module.exports.googleAuth = async (req, res) => {
   const { name, email, picture, sub } = req.body.userData;
@@ -12,8 +13,8 @@ module.exports.googleAuth = async (req, res) => {
       passwordGoogle: bcrypt.hashSync(sub, 7),
       email,
       emailConfirmed: false,
-      profile: { avatar: "", phoneNumber: "", position: "" },
-      settings: { lang: "eng", notification: false, theme: "white" },
+      profile: initialProfile,
+      settings: initialSettings,
       password: "",
       profileGoogle: { name, avatar: picture }
     });

@@ -5,13 +5,10 @@ const { validationResult } = require("express-validator");
 const { secret } = require("../config/config");
 const UserModel = require("../dbMongo/models/UserModel");
 const sendEmail = require("../mail/mailer");
+const baseClientURL = require("../config/url");
+const { initialProfile, initialSettings } = require("../config/initialsData");
 
 const generateAccessToken = id => jwt.sign({ id }, secret);
-const initialProfile = { avatar: "", name: "", phoneNumber: "", position: "", location: "", instagram: "", facebook: "", linkedin: "", telegram: "" };
-const initialSettings = { lang: "eng", notification: false, theme: "white" };
-
-// const baseClientURL = "http://kiwicode.tech:3000/";
-const baseClientURL = "https://vacman.netlify.app/";
 
 const makeHtml = (verificationToken) => `<h4> Hello dear customer </h4><br/>
     <p>We found you've been registered to Vacancy Manager app.</P>
@@ -159,7 +156,7 @@ module.exports.passCodeVerify = async (req, res) => {
   if (!verificationCode) throw new BadRequest("verificationCode required");
 
   const user = UserModel.findOne({ verificationCode });
-  if (!user) throw new NotFound("No user with that verificationCode");
+  if (!user) throw new NotFound("No user with that verification code");
   user.verificationCode = "";
   user.token = generateAccessToken(user._id);
   user.save();
