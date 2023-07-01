@@ -5,19 +5,19 @@ const { validationResult } = require("express-validator");
 const { secret } = require("../config/config");
 const UserModel = require("../dbMongo/models/UserModel");
 const sendEmail = require("../mail/mailer");
-const baseClientURL = require("../config/url");
+const { baseClientURL } = require("../config/url");
 const { initialProfile, initialSettings } = require("../config/initialsData");
 
 const generateAccessToken = id => jwt.sign({ id }, secret);
 
-const makeHtml = (verificationToken) => `<h4> Hello dear customer </h4><br/>
-    <p>We found you've been registered to Vacancy Manager app.</P>
-    <a target="_blank" href="${baseClientURL}confirmEmail?verificationCode=${verificationToken}">
-    Please, press here to confirm your email account</a>`;
-const makeHtmlPassRestore = (verificationToken) => `<h4> Hello dear customer </h4><br/>
-    <p>We are ready to change your password in Vacancy Manager app.</P>
-    <a target="_blank" href="${baseClientURL}passCodeVerify?PassRestoreCode=${verificationToken}">
-    Please, press here to continue</a>`;
+const makeHtml = (verificationToken) => `<h4> Hello dear customer </h4>
+  <p>We found you've been registered to Vacancy Manager app.</P>
+  <a target="_blank" href="${baseClientURL}confirmEmail?verificationCode=${verificationToken}">
+  Please, press here to confirm your email account</a>`;
+const makeHtmlPassRestore = (verificationToken) => `<h4> Hello dear customer </h4>
+  <p>We are ready to change your password in Vacancy Manager app.</P>
+  <a target="_blank" href="${baseClientURL}passCodeVerify?PassRestoreCode=${verificationToken}">
+  Please, press here to continue</a>`;
 
 module.exports.registration = async (req, res) => {
   const errors = validationResult(req);
