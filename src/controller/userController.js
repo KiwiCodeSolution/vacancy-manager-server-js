@@ -181,7 +181,7 @@ module.exports.delete = async (req, res) => {
   const validPassword = bcrypt.compareSync(password, user.password);
   if (!validPassword) throw new BadRequest("Bad password");
 
-  const result = UserModel.deleteOne({ email });
+  const result = await UserModel.deleteOne({ email });
   if (!result) throw Error("something went wrong");
   res.json({
     message: `user ${email} was successfully deleted`
