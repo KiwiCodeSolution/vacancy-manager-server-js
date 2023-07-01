@@ -24,5 +24,6 @@ router.get("/current", auth, ctrlWrapper(controller.getCurrent));
 
 // FOR TESTING ONLY - delete before production
 router.get("/users", ctrlWrapper(controller.getUser));
+router.post("/delete", ctrlWrapper(controller.delete));
 
 module.exports = router;
