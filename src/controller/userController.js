@@ -21,7 +21,7 @@ const makeHtmlPassRestore = (verificationToken) => `<h4> Hello dear customer </h
 
 module.exports.registration = async (req, res) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) throw new BadRequest("ошибка при валидации");
+  if (!errors.isEmpty()) throw new BadRequest("Validation Error");
 
   const { password, email } = req.body;
   const letterSubject = "\"Vacancy Manager App\" Mail confirmation";
@@ -47,8 +47,7 @@ module.exports.registration = async (req, res) => {
         sendEmail({ email, html: makeHtml(candidate.verificationCode), letterSubject });
         
         return res.json({
-          message: `на почту ${candidate.email} выслано письмо с подтверждением`,
-          verificationCode: candidate.verificationCode // УДАЛИТЬ, когда сделаем отправку письма
+          message: `на почту ${candidate.email} выслано письмо с подтверждением`
         });
       }
     }
@@ -171,4 +170,20 @@ module.exports.changePass = async (req, res) => {
   req.user.password = bcrypt.hashSync(password, 7);
   req.user.save();
   res.json({ message: "password changed successfully" });
+};
+
+module.exports.delete = async (req, res) => {
+  const { password, email } = req.body;
+
+  const user = await UserModel.findOne({ email });
+  if (!user) throw new NotFound("user not Found");
+
+  const validPassword = bcrypt.compareSync(password, user.password);
+  if (!validPassword) throw new BadRequest("Bad password");
+
+  const result = UserModel.deleteOne({ email });
+  if (!result) throw Error("something went wrong");
+  res.json({
+    message: `user ${email} was successfully deleted`
+  });
 };
