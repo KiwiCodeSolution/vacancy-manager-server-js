@@ -5,12 +5,10 @@ const UserModel = require("../dbMongo/models/UserModel");
 const { initialProfile, initialSettings } = require("../config/initialsData");
 
 module.exports.googleAuth = async (req, res) => {
-  console.log("googleAuth request body:", req.body);
   const { name, email, picture, sub } = req.body.userData;
   const user = await UserModel.findOne({ email });
 
   if (!user) { // register googleUser
-    console.log("create new google user");
     const user = new UserModel({
       passwordGoogle: bcrypt.hashSync(sub, 7),
       email,
@@ -32,7 +30,6 @@ module.exports.googleAuth = async (req, res) => {
   };
 
   // User exist, logging though Google
-  console.log("google user exist - modifying profile ..");
   if (!user.profileGoogle) user.profileGoogle = { name, avatar: picture };
   if (!user.passwordGoogle) user.passwordGoogle = bcrypt.hashSync(sub, 7);
   // const validPassword = bcrypt.compareSync(sub, user.passwordGoogle);
