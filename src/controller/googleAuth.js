@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { BadRequest } = require("http-errors");
+// const { BadRequest } = require("http-errors");
 const UserModel = require("../dbMongo/models/UserModel");
 const { initialProfile, initialSettings } = require("../config/initialsData");
 
@@ -28,12 +28,12 @@ module.exports.googleAuth = async (req, res) => {
       settings: user.settings
     });
   };
-  const validPassword = bcrypt.compareSync(sub, user.passwordGoogle);
-  if (!validPassword) throw new BadRequest("Bad password");
 
   // User exist, logging though Google
   if (!user.profileGoogle) user.profileGoogle = { name, avatar: picture };
   if (!user.passwordGoogle) user.passwordGoogle = bcrypt.hashSync(sub, 7);
+  // const validPassword = bcrypt.compareSync(sub, user.passwordGoogle);
+  // if (!validPassword) throw new BadRequest("Bad password");
   user.token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
   await user.save();
   
